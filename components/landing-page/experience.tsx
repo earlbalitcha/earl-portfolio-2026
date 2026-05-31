@@ -35,11 +35,20 @@ const majorProjects = [
       "Reporting and analytics",
       "Third-party integrations",
     ],
-    tech: ["React.js", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "Prisma", "Socket.IO"],
+    tech: [
+      "React.js",
+      "Next.js",
+      "TypeScript",
+      "Node.js",
+      "PostgreSQL",
+      "Prisma",
+      "Socket.IO",
+    ],
   },
   {
     title: "Work Order Automation Platform",
-    summary: "Automated work order management to reduce manual operational work and improve visibility.",
+    summary:
+      "Automated work order management to reduce manual operational work and improve visibility.",
     features: [
       "Work order creation",
       "Assignment workflows",
@@ -54,8 +63,18 @@ const majorProjects = [
     title: "Property Management Integration Platform",
     summary:
       "Integrations connecting property management systems and hospitality platforms with internal tooling.",
-    integrations: ["Hostaway API", "Stripe API", "CRM systems", "Internal operational systems"],
-    features: ["Reservation synchronization", "Payment processing", "Data automation", "Operational reporting"],
+    integrations: [
+      "Hostaway API",
+      "Stripe API",
+      "CRM systems",
+      "Internal operational systems",
+    ],
+    features: [
+      "Reservation synchronization",
+      "Payment processing",
+      "Data automation",
+      "Operational reporting",
+    ],
     tech: ["React.js", "Next.js", "Node.js", "REST APIs", "Webhooks"],
   },
   {
@@ -77,7 +96,8 @@ const majorProjects = [
   },
   {
     title: "Squarespace Website Development",
-    summary: "Business and marketing sites on Squarespace with ongoing maintenance.",
+    summary:
+      "Business and marketing sites on Squarespace with ongoing maintenance.",
     features: [
       "Landing pages",
       "Business websites",
@@ -92,7 +112,12 @@ const majorProjects = [
     title: "Real-Time Communication Systems",
     summary:
       "Socket.IO–based features for live collaboration and monitoring—reducing stale dashboard data and improving response time for in-app updates.",
-    features: ["Live chat systems", "Dashboard updates", "Instant notifications", "Real-time operational monitoring"],
+    features: [
+      "Live chat systems",
+      "Dashboard updates",
+      "Instant notifications",
+      "Real-time operational monitoring",
+    ],
     tech: ["Socket.IO", "Node.js", "React.js", "Next.js"],
   },
 ];
@@ -105,7 +130,9 @@ const projectCard =
 
 export default function ProfessionalExperience() {
   return (
-    <section id="experience" className="my-20 scroll-mt-24 space-y-10 md:space-y-14">
+    <section
+      id="experience"
+      className="my-20 scroll-mt-24 space-y-10 md:space-y-14">
       <SectionHeader
         eyebrow="Career"
         title="Professional"
@@ -114,24 +141,37 @@ export default function ProfessionalExperience() {
       />
 
       <div className={surfaceCard}>
-        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary/90">Current role</p>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary/90">
+          Current role
+        </p>
         <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h3 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">Full Stack Developer</h3>
-            <p className="mt-1 text-lg text-muted-foreground">Falcon Global Services</p>
+            <h3 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+              Full Stack Developer
+            </h3>
+            <p className="mt-1 text-lg text-muted-foreground">
+              Falcon Global Services
+            </p>
           </div>
-          <p className="text-sm font-medium text-muted-foreground sm:pb-0.5">2024 – Present · Philippines</p>
+          <p className="text-sm font-medium text-muted-foreground sm:pb-0.5">
+            2024 – 2026 · Philippines
+          </p>
         </div>
       </div>
 
       <div>
-        <h4 className="mb-6 text-lg font-semibold text-foreground">Responsibilities</h4>
+        <h4 className="mb-6 text-lg font-semibold text-foreground">
+          Responsibilities
+        </h4>
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {responsibilities.map((r) => (
             <li
               key={r}
               className="flex gap-3 rounded-2xl border border-border/90 bg-muted/20 p-4 text-sm leading-snug text-muted-foreground transition-colors hover:border-primary/25 dark:bg-muted/10">
-              <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
+              <Check
+                className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                aria-hidden
+              />
               <span>{r}</span>
             </li>
           ))}
@@ -139,23 +179,31 @@ export default function ProfessionalExperience() {
       </div>
 
       <div>
-        <h4 className="mb-6 text-lg font-semibold text-foreground">Major projects</h4>
+        <h4 className="mb-6 text-lg font-semibold text-foreground">
+          Major projects
+        </h4>
         <div className="grid grid-cols-1 gap-6">
           {majorProjects.map((project) => (
             <div key={project.title} className={projectCard}>
               <details className="group">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 text-left font-medium text-foreground marker:content-none md:p-6 [&::-webkit-details-marker]:hidden">
-                  <span className="pr-2 text-base md:text-lg">{project.title}</span>
+                  <span className="pr-2 text-base md:text-lg">
+                    {project.title}
+                  </span>
                   <ChevronDown
                     className="h-5 w-5 shrink-0 text-muted-foreground transition group-open:rotate-180"
                     aria-hidden
                   />
                 </summary>
                 <div className="border-t border-border/80 px-5 pb-5 pt-4 md:px-6 md:pb-6">
-                  <p className="text-sm leading-relaxed text-muted-foreground md:text-base">{project.summary}</p>
+                  <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
+                    {project.summary}
+                  </p>
                   {project.integrations ? (
                     <div className="mt-4">
-                      <p className="text-xs font-semibold uppercase tracking-wide text-foreground">Integrations</p>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-foreground">
+                        Integrations
+                      </p>
                       <div className="mt-2 flex flex-wrap gap-2">
                         {project.integrations.map((t) => (
                           <span
@@ -168,7 +216,9 @@ export default function ProfessionalExperience() {
                     </div>
                   ) : null}
                   <div className="mt-4">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-foreground">Highlights</p>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-foreground">
+                      Highlights
+                    </p>
                     <ul className="mt-2 grid gap-1.5 text-sm text-muted-foreground sm:grid-cols-2 md:text-base">
                       {project.features.map((f) => (
                         <li key={f} className="flex gap-2">
