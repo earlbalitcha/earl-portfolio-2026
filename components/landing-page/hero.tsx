@@ -144,7 +144,7 @@ function ResponsiveCamera() {
 export default function Hero() {
   return (
     <div
-      className={`relative isolate min-h-screen h-[100svh] w-full overflow-hidden bg-background ${manrope.className}`}>
+      className={`relative isolate min-h-[100dvh] w-full overflow-x-hidden overflow-y-auto bg-background md:h-[100svh] md:overflow-hidden ${manrope.className}`}>
       {/* Background stack: keep every layer behind UI (WebGL often composites above siblings without this). */}
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
         <div className="absolute inset-0 overflow-hidden">
@@ -164,8 +164,8 @@ export default function Hero() {
         <div className="absolute inset-0 z-[2] bg-gradient-to-b from-background/70 via-background/15 to-background/90 dark:from-[hsl(0_0%_7%)/0.88] dark:via-transparent dark:to-[hsl(0_0%_7%)/0.95)]" />
       </div>
 
-      <div className="relative z-10 flex min-h-[100svh] items-center justify-center px-4 pb-16 pt-28 sm:px-6 md:px-8">
-        <div className="relative w-full max-w-2xl lg:max-w-4xl">
+      <div className="relative z-10 flex min-h-[100dvh] w-full flex-col items-center justify-start px-4 pb-[max(6rem,calc(env(safe-area-inset-bottom,0px)+2.5rem))] pt-[max(5.5rem,calc(env(safe-area-inset-top,0px)+3.25rem))] sm:px-6 md:min-h-[100svh] md:justify-center md:px-8 md:pb-16 md:pt-28">
+        <div className="relative w-full max-w-2xl shrink-0 lg:max-w-4xl">
           <div className="relative overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-primary/25 via-violet-500/15 to-fuchsia-500/20 p-[1px] shadow-xl shadow-primary/10 dark:from-primary/20 dark:shadow-primary/5">
             <div className="relative overflow-hidden rounded-[calc(1.75rem-1px)] border border-border/50 bg-background/90 text-foreground shadow-lg backdrop-blur-2xl dark:border-white/[0.08] dark:bg-[hsl(220_10%_10%/0.92)]">
               <div

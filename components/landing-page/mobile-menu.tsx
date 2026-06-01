@@ -1,159 +1,91 @@
-"use client"
+"use client";
 
-import { useEffect, useRef, useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { usePathname } from "next/navigation"
-import { X } from "lucide-react"
-import { useTheme } from "next-themes"
+import {useEffect, useRef} from "react";
+import Link from "next/link";
+import {usePathname} from "next/navigation";
+import {X} from "lucide-react";
+import {landingProjectsNav, landingScrollNavItems} from "./nav-config";
 
 interface MobileMenuProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
-  const [mounted, setMounted] = useState(false)
-  const menuRef = useRef<HTMLDivElement>(null)
-  const pathname = usePathname()
-  const { resolvedTheme } = useTheme()
+export default function MobileMenu({isOpen, onClose}: MobileMenuProps) {
+  const menuRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
-  // Ensure component is mounted before rendering theme-dependent elements
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  const isDarkMode = mounted && resolvedTheme === "dark"
-
-  // Prevent body scroll when menu is open
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden"
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = ""
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = ""
-    }
-  }, [isOpen])
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
-  // Handle clicks outside the menu
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        onClose()
+        onClose();
       }
-    }
+    };
 
     if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside)
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [isOpen, onClose])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, onClose]);
 
-  if (!isOpen) return null
-
-  // Determine which logo to show based on theme
-  const logoSrc = isDarkMode ? "/logo-light.png" : "/logo-dark.png"
+  if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black/50 md:hidden" style={{ display: isOpen ? "block" : "none" }}>
+    <div className="fixed inset-0 z-[100] bg-black/50 md:hidden" style={{display: isOpen ? "block" : "none"}}>
       <div
         ref={menuRef}
-        className="fixed top-0 right-0 h-full w-[85%] max-w-sm bg-background shadow-xl overflow-y-auto"
-      >
-        <div className="sticky top-0 z-10 flex items-center justify-between p-4 border-b border-border bg-background">
-          <Link href="/" className="flex items-center" onClick={onClose}>
-            {mounted ? (
-              <Image
-                src={logoSrc || "/placeholder.svg"}
-                alt="Earl Balitcha — portfolio"
-                width={150}
-                height={40}
-                className="h-8 w-auto"
-              />
-            ) : (
-              <div className="h-8 w-[150px]" />
-            )}
-          </Link>
+        className="fixed top-0 right-0 h-full w-[85%] max-w-sm overflow-y-auto border-l border-border/80 bg-background shadow-xl">
+        <div className="sticky top-0 z-10 flex items-center justify-end border-b border-border/80 bg-background/95 px-4 py-3 pr-[max(1rem,env(safe-area-inset-right))] pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur-sm">
           <button
+            type="button"
             onClick={onClose}
-            className="p-2 rounded-full hover:bg-accent transition-colors"
-            aria-label="Close menu"
-          >
-            <X className="h-6 w-6 text-muted-foreground" />
+            className="rounded-xl p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            aria-label="Close menu">
+            <X className="h-5 w-5" />
           </button>
         </div>
 
-        <nav className="p-4">
-          <ul className="space-y-1">
-            <li>
-              <Link
-                href="/"
-                className={`flex items-center rounded-lg px-4 py-3 text-base ${
-                  pathname === "/"
-                    ? "bg-primary/10 text-primary"
-                    : "text-foreground hover:bg-accent"
-                }`}
-                onClick={onClose}>
-                Home
-              </Link>
-            </li>
-            {[
-              {href: "/#about", label: "About"},
-              {href: "/#shopify", label: "Shopify"},
-              {href: "/#experience", label: "Experience"},
-              {href: "/#projects", label: "Work"},
-              {href: "/#skills", label: "Skills"},
-            ].map((item) => (
+        <nav className="p-3 pb-[max(1rem,env(safe-area-inset-bottom))]" aria-label="Primary">
+          <ul className="space-y-0.5 rounded-2xl border border-border/60 bg-muted/25 p-1 dark:border-white/[0.08] dark:bg-muted/15">
+            {landingScrollNavItems.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="flex items-center rounded-lg px-4 py-3 text-base text-foreground hover:bg-accent"
+                  className="block rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-background/90 hover:text-foreground dark:hover:bg-background/10"
                   onClick={onClose}>
                   {item.label}
                 </Link>
               </li>
             ))}
-            <li>
+            <li className="border-t border-border/70 pt-1 dark:border-white/[0.08]">
               <Link
-                href="/projects"
-                className={`flex items-center rounded-lg px-4 py-3 text-base ${
+                href={landingProjectsNav.href}
+                className={`block rounded-xl px-3 py-2.5 text-sm font-semibold transition-all ${
                   pathname === "/projects" || pathname?.startsWith("/projects/")
-                    ? "bg-primary/10 text-primary"
-                    : "text-foreground hover:bg-accent"
+                    ? "bg-primary text-primary-foreground shadow-md shadow-primary/25"
+                    : "text-muted-foreground hover:bg-background/90 hover:text-foreground dark:hover:bg-background/10"
                 }`}
                 onClick={onClose}>
-                Projects
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/start"
-                className={`flex items-center rounded-lg px-4 py-3 text-base ${
-                  pathname === "/start"
-                    ? "bg-primary/10 text-primary"
-                    : "text-foreground hover:bg-accent"
-                }`}
-                onClick={onClose}>
-                Start a project
+                {landingProjectsNav.label}
               </Link>
             </li>
           </ul>
         </nav>
-
-        <div className="mt-4 border-t border-border p-4">
-          <Link
-            href="/#contact"
-            className="flex w-full items-center justify-center rounded-full bg-primary px-4 py-3.5 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition hover:opacity-95"
-            onClick={onClose}>
-            Contact
-          </Link>
-        </div>
       </div>
     </div>
-  )
+  );
 }

@@ -11,15 +11,7 @@ import ThemeToggle from "./theme-toggle";
 import {useTheme} from "next-themes";
 import MobileMenu from "./mobile-menu";
 import {ScrollProgress} from "../ui/scroll-progress";
-
-const navItems = [
-  {href: "/#about", label: "About"},
-  {href: "/#shopify", label: "Shopify"},
-  {href: "/#experience", label: "Experience"},
-  {href: "/#projects", label: "Work"},
-  {href: "/#skills", label: "Skills"},
-  {href: "/#contact", label: "Contact"},
-] as const;
+import {landingProjectsNav, landingScrollNavItems} from "./nav-config";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -85,7 +77,7 @@ export default function Header() {
                 className="hidden items-center rounded-2xl border border-border/60 bg-muted/40 p-1 shadow-inner shadow-black/[0.03] backdrop-blur-sm dark:border-white/[0.08] dark:bg-muted/25 md:flex"
                 aria-label="Primary">
                 <ul className="flex items-center gap-0.5">
-                  {navItems.map((item) => (
+                  {landingScrollNavItems.map((item) => (
                     <li key={item.href}>
                       <Link
                         href={item.href}
@@ -97,13 +89,13 @@ export default function Header() {
                 </ul>
                 <span className="mx-1 hidden h-5 w-px bg-border/80 sm:block" aria-hidden />
                 <Link
-                  href="/projects"
+                  href={landingProjectsNav.href}
                   className={`shrink-0 rounded-xl px-4 py-2 text-sm font-semibold transition-all ${
                     pathname === "/projects" || pathname?.startsWith("/projects/")
                       ? "bg-primary text-primary-foreground shadow-md shadow-primary/25"
                       : "text-muted-foreground hover:bg-background/90 hover:text-foreground dark:hover:bg-background/10"
                   }`}>
-                  Projects
+                  {landingProjectsNav.label}
                 </Link>
               </nav>
 
