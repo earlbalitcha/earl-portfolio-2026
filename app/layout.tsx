@@ -18,7 +18,7 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: "Earl Gerald R. Balitcha | Full Stack Web Developer",
   description:
-    "Full stack web developer in the Philippines. I build products with React, Next.js, Node.js, TypeScript, REST and GraphQL APIs, PostgreSQL, auth, and real-time features—plus React Native and Shopify storefronts when the work includes ecommerce.",
+    "Full stack web developer in the Philippines with three years of professional experience. I build products with React, Next.js, Node.js, TypeScript, REST and GraphQL APIs, PostgreSQL, auth, and real-time features—plus React Native and Shopify storefronts when the work includes ecommerce.",
   icons: {
     icon: [{ url: "/automatic-favicon-no-bg.png", type: "image/png" }],
     apple: [{ url: "/automatic-favicon-no-bg.png" }],

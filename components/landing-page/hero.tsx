@@ -205,7 +205,9 @@ export default function Hero() {
                   </h1>
 
                   <p className="mt-5 text-balance text-base font-semibold leading-snug text-foreground sm:text-lg">
-                    {"Full Stack Developer | React, Next.js, Node.js, Shopify & API integrations"}
+                    {
+                      "Full Stack Developer with 3 years of experience | React, Next.js, Node.js, Shopify & API integrations"
+                    }
                   </p>
 
                   <div className="mt-5">

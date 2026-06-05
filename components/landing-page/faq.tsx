@@ -48,7 +48,9 @@ export default function AboutSection() {
           </h3>
           <div className="mt-4 space-y-4 text-sm leading-relaxed text-muted-foreground md:text-base">
             <p>
-              Full Stack Developer building scalable web and mobile applications
+              Full Stack Developer with{" "}
+              <span className="font-medium text-foreground">three years</span>{" "}
+              of professional experience building scalable web and mobile applications
               with{" "}
               <span className="font-medium text-foreground">
                 React.js, Next.js, Node.js, TypeScript, and React Native
@@ -116,16 +118,23 @@ export default function AboutSection() {
         </div>
         <div className={surfaceCard}>
           <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary/90">
-            Education
+            Education & background
           </p>
           <div className="mt-6 space-y-6 text-sm leading-relaxed text-muted-foreground md:text-base">
             <div>
+              <p className="font-semibold text-foreground">Full Stack Developer</p>
+              <p className="mt-1">Falcon Global Services</p>
+              <p className="mt-1 text-xs text-muted-foreground/90 sm:text-sm">
+                2023 – 2026 · Tarlac City
+              </p>
+            </div>
+            <div className="border-t border-border/60 pt-6">
               <p className="font-semibold text-foreground">
                 Bachelor of Science in Information Technology
               </p>
               <p className="mt-1">Central Luzon State University</p>
               <p className="mt-1 text-xs text-muted-foreground/90 sm:text-sm">
-                2019 – 2024 · Science City of Muñoz, Nueva Ecija
+                2019 – 2023 · Science City of Muñoz, Nueva Ecija
               </p>
             </div>
             <div className="border-t border-border/60 pt-6">

@@ -137,7 +137,7 @@ export default function ProfessionalExperience() {
         eyebrow="Career"
         title="Professional"
         titleAccent="experience"
-        description="Full-time at Falcon Global Services—React and Next.js web apps, Node.js services, dashboards, automation, APIs, and integrations (including ecommerce and Shopify where relevant)."
+        description="Three years full-time at Falcon Global Services (2023–2026)—React and Next.js web apps, Node.js services, dashboards, automation, APIs, and integrations (including ecommerce and Shopify where relevant)."
       />
 
       <div className={surfaceCard}>
@@ -154,7 +154,7 @@ export default function ProfessionalExperience() {
             </p>
           </div>
           <p className="text-sm font-medium text-muted-foreground sm:pb-0.5">
-            2024 – 2026 · Philippines
+            2023 – 2026 · Tarlac City
           </p>
         </div>
       </div>
