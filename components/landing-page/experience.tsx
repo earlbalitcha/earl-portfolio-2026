@@ -150,51 +150,28 @@ export default function ProfessionalExperience() {
         </div>
       </div>
 
-      <ScrollPinned
-        className="mt-10 md:mt-12"
-        itemCount={majorProjects.length}
-        header={
-          <>
-            <h4 className="font-display text-lg font-semibold text-foreground md:text-xl">
-              Major projects
-            </h4>
-            <p className="mt-1.5 max-w-2xl text-sm text-muted-foreground">
-              Pinned highlights from production work at Falcon Global Services.
-            </p>
-          </>
-        }>
-        {({active, scrollToIndex}) => {
-          const project = majorProjects[active];
-          return (
-            <div className="grid gap-6 lg:grid-cols-[minmax(0,14rem)_1fr] lg:gap-8">
-              <div className="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible">
-                {majorProjects.map((p, i) => (
-                  <button
-                    key={p.title}
-                    type="button"
-                    onClick={() => scrollToIndex(i)}
-                    className={cn(
-                      "shrink-0 rounded-md border px-3 py-2 text-left text-sm font-medium transition-colors",
-                      i === active
-                        ? "border-primary/40 bg-primary/10 text-foreground"
-                        : "border-border bg-card text-muted-foreground hover:text-foreground",
-                    )}>
-                    {p.title}
-                  </button>
-                ))}
-              </div>
-
-              <div
+      <div className="mt-10 md:mt-12">
+        {/* Mobile / tablet — full stacked cards, no pin */}
+        <div className="container lg:hidden">
+          <h4 className="font-display text-lg font-semibold text-foreground">
+            Major projects
+          </h4>
+          <p className="mt-1.5 max-w-2xl text-sm text-muted-foreground">
+            Highlights from production work at Falcon Global Services.
+          </p>
+          <div className="mt-6 space-y-4">
+            {majorProjects.map((project, index) => (
+              <article
                 key={project.title}
-                className="surface-glass animate-fade-up p-5 md:p-6">
+                className="surface-glass p-5">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
-                  {String(active + 1).padStart(2, "0")} /{" "}
+                  {String(index + 1).padStart(2, "0")} /{" "}
                   {String(majorProjects.length).padStart(2, "0")}
                 </p>
-                <h3 className="font-display mt-2 text-xl font-semibold text-foreground md:text-2xl">
+                <h3 className="font-display mt-2 text-xl font-semibold text-foreground">
                   {project.title}
                 </h3>
-                <p className="mt-2 text-sm text-muted-foreground md:text-base">
+                <p className="mt-2 text-sm text-muted-foreground">
                   {project.summary}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
@@ -206,7 +183,7 @@ export default function ProfessionalExperience() {
                     </span>
                   ))}
                 </div>
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="mt-3 flex flex-wrap gap-2">
                   {project.tech.map((t) => (
                     <span
                       key={t}
@@ -215,11 +192,85 @@ export default function ProfessionalExperience() {
                     </span>
                   ))}
                 </div>
-              </div>
-            </div>
-          );
-        }}
-      </ScrollPinned>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop — scroll-pinned */}
+        <div className="hidden lg:block">
+          <ScrollPinned
+            itemCount={majorProjects.length}
+            header={
+              <>
+                <h4 className="font-display text-lg font-semibold text-foreground md:text-xl">
+                  Major projects
+                </h4>
+                <p className="mt-1.5 max-w-2xl text-sm text-muted-foreground">
+                  Pinned highlights from production work at Falcon Global
+                  Services.
+                </p>
+              </>
+            }>
+            {({active, scrollToIndex}) => {
+              const project = majorProjects[active];
+              return (
+                <div className="grid gap-6 lg:grid-cols-[minmax(0,14rem)_1fr] lg:gap-8">
+                  <div className="flex flex-col gap-2">
+                    {majorProjects.map((p, i) => (
+                      <button
+                        key={p.title}
+                        type="button"
+                        onClick={() => scrollToIndex(i)}
+                        className={cn(
+                          "rounded-md border px-3 py-2 text-left text-sm font-medium transition-colors",
+                          i === active
+                            ? "border-primary/40 bg-primary/10 text-foreground"
+                            : "border-border bg-card text-muted-foreground hover:text-foreground",
+                        )}>
+                        {p.title}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div
+                    key={project.title}
+                    className="surface-glass animate-fade-up p-5 md:p-6">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+                      {String(active + 1).padStart(2, "0")} /{" "}
+                      {String(majorProjects.length).padStart(2, "0")}
+                    </p>
+                    <h3 className="font-display mt-2 text-xl font-semibold text-foreground md:text-2xl">
+                      {project.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-muted-foreground md:text-base">
+                      {project.summary}
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {project.features.map((f) => (
+                        <span
+                          key={f}
+                          className="rounded-md border border-border bg-muted/50 px-2.5 py-1 text-xs font-medium text-foreground">
+                          {f}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {project.tech.map((t) => (
+                        <span
+                          key={t}
+                          className="rounded-md border border-primary/20 bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            }}
+          </ScrollPinned>
+        </div>
+      </div>
     </section>
   );
 }

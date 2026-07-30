@@ -192,99 +192,163 @@ function Mark({item}: {item: StackItem}) {
   );
 }
 
+function SectionIntro({forPinned}: {forPinned?: boolean}) {
+  return (
+    <div className="max-w-2xl">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+        Technology
+      </p>
+      <h2 className="font-display mt-2 text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+        Built in <span className="gradient-text">layers</span>
+      </h2>
+      <p className="mt-3 text-sm text-muted-foreground md:text-base">
+        {forPinned
+          ? "Scroll through each layer — frontend, backend, CMS, integrations, and delivery."
+          : "Frontend, backend, CMS, integrations, and delivery — each layer fully listed below."}
+      </p>
+    </div>
+  );
+}
+
+function LayerCard({
+  layer,
+  index,
+  total,
+}: {
+  layer: Layer;
+  index: number;
+  total: number;
+}) {
+  return (
+    <article className="relative overflow-hidden rounded-xl border border-border bg-card">
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-primary via-violet-400/80 to-transparent" />
+      <div className="border-b border-border px-5 py-4 sm:px-6 sm:py-5">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+          {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}{" "}
+          — {layer.title}
+        </p>
+        <p className="mt-2 max-w-lg text-sm text-muted-foreground">
+          {layer.blurb}
+        </p>
+      </div>
+      <ul className="grid grid-cols-1 gap-px bg-border sm:grid-cols-2">
+        {layer.items.map((item, i) => (
+          <li
+            key={item.name}
+            className="flex items-center gap-3 bg-card px-4 py-3.5 sm:px-5">
+            <Mark item={item} />
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-foreground">{item.name}</p>
+              <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
+                {layer.title} · {String(i + 1).padStart(2, "0")}
+              </p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </article>
+  );
+}
+
 /**
- * Stack layers advance on scroll — same scroll-pinned pattern as Major projects.
+ * Mobile/tablet: stacked full cards (no pin) so content is never clipped.
+ * Desktop (lg+): scroll-pinned layer switcher.
  */
 export function AnimatedSkillsGrid() {
   return (
     <section id="skills" className="my-20 scroll-mt-24 md:my-28">
-      <ScrollPinned
-        itemCount={LAYERS.length}
-        header={
-          <div className="max-w-2xl">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-              Technology
-            </p>
-            <h2 className="font-display mt-2 text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
-              Built in <span className="gradient-text">layers</span>
-            </h2>
-            <p className="mt-3 text-sm text-muted-foreground md:text-base">
-              Scroll through each layer — frontend, backend, CMS, integrations,
-              and delivery.
-            </p>
-          </div>
-        }>
-        {({active, scrollToIndex}) => {
-          const current = LAYERS[active];
-          return (
-            <div className="grid gap-6 lg:grid-cols-[minmax(0,14rem)_1fr] lg:gap-8">
-              <div
-                className="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible"
-                role="tablist"
-                aria-label="Stack layers">
-                {LAYERS.map((layer, i) => (
-                  <button
-                    key={layer.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={i === active}
-                    onClick={() => scrollToIndex(i)}
-                    className={cn(
-                      "flex min-w-[9.5rem] shrink-0 items-start gap-3 rounded-md border px-3 py-2.5 text-left transition-colors lg:min-w-0",
-                      i === active
-                        ? "border-primary/40 bg-primary/10 text-foreground"
-                        : "border-border bg-card text-muted-foreground hover:text-foreground",
-                    )}>
-                    <span
-                      className={cn(
-                        "font-display mt-0.5 text-xs tabular-nums",
-                        i === active
-                          ? "text-primary"
-                          : "text-muted-foreground",
-                      )}>
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span className="text-sm font-medium">{layer.title}</span>
-                  </button>
-                ))}
-              </div>
+      {/* Natural scroll stack — phones & tablets */}
+      <div className="container lg:hidden">
+        <SectionIntro />
+        <div className="mt-8 space-y-4 md:mt-10 md:space-y-5">
+          {LAYERS.map((layer, index) => (
+            <LayerCard
+              key={layer.id}
+              layer={layer}
+              index={index}
+              total={LAYERS.length}
+            />
+          ))}
+        </div>
+      </div>
 
-              <div
-                key={current.id}
-                role="tabpanel"
-                className="relative animate-fade-up overflow-hidden rounded-xl border border-border bg-card">
-                <div className="pointer-events-none absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-primary via-violet-400/80 to-transparent" />
-                <div className="border-b border-border px-6 py-5 md:px-8 md:py-6">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
-                    {String(active + 1).padStart(2, "0")} /{" "}
-                    {String(LAYERS.length).padStart(2, "0")} — {current.title}
-                  </p>
-                  <p className="mt-2 max-w-lg text-sm text-muted-foreground md:text-base">
-                    {current.blurb}
-                  </p>
-                </div>
-                <ul className="grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">
-                  {current.items.map((item, i) => (
-                    <li
-                      key={item.name}
-                      className="flex items-center gap-3 bg-card px-5 py-4 transition-colors hover:bg-muted/30 md:px-6">
-                      <Mark item={item} />
-                      <div className="min-w-0">
-                        <p className="text-sm font-semibold text-foreground">
-                          {item.name}
-                        </p>
-                        <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
-                          {current.title} · {String(i + 1).padStart(2, "0")}
-                        </p>
-                      </div>
-                    </li>
+      {/* Scroll-pinned layers — large screens only */}
+      <div className="hidden lg:block">
+        <ScrollPinned
+          itemCount={LAYERS.length}
+          header={<SectionIntro forPinned />}>
+          {({active, scrollToIndex}) => {
+            const current = LAYERS[active];
+            return (
+              <div className="grid gap-6 lg:grid-cols-[minmax(0,14rem)_1fr] lg:gap-8">
+                <div
+                  className="flex flex-col gap-2"
+                  role="tablist"
+                  aria-label="Stack layers">
+                  {LAYERS.map((layer, i) => (
+                    <button
+                      key={layer.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={i === active}
+                      onClick={() => scrollToIndex(i)}
+                      className={cn(
+                        "flex items-start gap-3 rounded-md border px-3 py-2.5 text-left transition-colors",
+                        i === active
+                          ? "border-primary/40 bg-primary/10 text-foreground"
+                          : "border-border bg-card text-muted-foreground hover:text-foreground",
+                      )}>
+                      <span
+                        className={cn(
+                          "font-display mt-0.5 text-xs tabular-nums",
+                          i === active
+                            ? "text-primary"
+                            : "text-muted-foreground",
+                        )}>
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="text-sm font-medium">{layer.title}</span>
+                    </button>
                   ))}
-                </ul>
+                </div>
+
+                <div
+                  key={current.id}
+                  role="tabpanel"
+                  className="relative animate-fade-up overflow-hidden rounded-xl border border-border bg-card">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-primary via-violet-400/80 to-transparent" />
+                  <div className="border-b border-border px-6 py-5 md:px-8 md:py-6">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+                      {String(active + 1).padStart(2, "0")} /{" "}
+                      {String(LAYERS.length).padStart(2, "0")} — {current.title}
+                    </p>
+                    <p className="mt-2 max-w-lg text-sm text-muted-foreground md:text-base">
+                      {current.blurb}
+                    </p>
+                  </div>
+                  <ul className="grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">
+                    {current.items.map((item, i) => (
+                      <li
+                        key={item.name}
+                        className="flex items-center gap-3 bg-card px-5 py-4 transition-colors hover:bg-muted/30 md:px-6">
+                        <Mark item={item} />
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-foreground">
+                            {item.name}
+                          </p>
+                          <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
+                            {current.title} · {String(i + 1).padStart(2, "0")}
+                          </p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            </div>
-          );
-        }}
-      </ScrollPinned>
+            );
+          }}
+        </ScrollPinned>
+      </div>
     </section>
   );
 }
