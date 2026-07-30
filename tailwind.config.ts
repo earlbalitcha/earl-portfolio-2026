@@ -94,6 +94,10 @@ const config: Config = {
       gridTemplateRows: {
         "auto-dense": "auto",
       },
+      fontFamily: {
+        sans: ["var(--font-outfit)", "system-ui", "sans-serif"],
+        display: ["var(--font-outfit)", "system-ui", "sans-serif"],
+      },
       keyframes: {
         aurora: {
           "0%, 100%": { transform: "translate(0%, 0%) scale(1)" },
@@ -104,10 +108,25 @@ const config: Config = {
           "0%": { opacity: "0", transform: "translateY(18px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+        "marquee-reverse": {
+          "0%": { transform: "translateX(-50%)" },
+          "100%": { transform: "translateX(0)" },
+        },
       },
       animation: {
         aurora: "aurora 22s ease-in-out infinite",
         "fade-up": "fade-up 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards",
+        float: "float 7s ease-in-out infinite",
+        marquee: "marquee 48s linear infinite",
+        "marquee-reverse": "marquee-reverse 56s linear infinite",
       },
     },
   },

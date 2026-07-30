@@ -4,6 +4,8 @@ import { Outfit } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { Analytics } from "@vercel/analytics/react"
+import AmbientBackground from "@/components/landing-page/ambient-background"
+import IntroCurtain from "@/components/landing-page/intro-curtain"
 import "@/components/landing-page/styles.css"
 import { Suspense } from "react"
 import "./globals.css"
@@ -18,10 +20,10 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: "Earl Gerald R. Balitcha | Full Stack Web Developer",
   description:
-    "Full stack web developer in the Philippines with three years of professional experience. I build products with React, Next.js, Node.js, TypeScript, REST and GraphQL APIs, PostgreSQL, auth, and real-time features—plus React Native and Shopify storefronts when the work includes ecommerce.",
+    "Full stack web developer in the Philippines with 2 years of professional experience. I build scalable apps with React, Next.js, Vue.js, Node.js, TypeScript, and Python—plus REST/GraphQL APIs, realtime features, Shopify/WordPress/Squarespace, and CI/CD deployments.",
   icons: {
-    icon: [{ url: "/automatic-favicon-no-bg.png", type: "image/png" }],
-    apple: [{ url: "/automatic-favicon-no-bg.png" }],
+    icon: [{ url: "/earl-logo.png", type: "image/png" }],
+    apple: [{ url: "/earl-logo.png" }],
   },
   generator: "v0.app",
 }
@@ -32,15 +34,19 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={outfit.className}>
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <body className={`${outfit.variable} ${outfit.className}`}>
+        {/* Curtain outside Suspense so it always mounts on load/reload */}
+        <IntroCurtain />
         <Suspense fallback={null}>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
+            forcedTheme="dark"
             enableSystem={false}
             storageKey="portfolio-theme"
             disableTransitionOnChange>
+            <AmbientBackground />
             {children}
             <Toaster richColors closeButton position="top-center" />
           </ThemeProvider>

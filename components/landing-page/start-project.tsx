@@ -2,46 +2,23 @@
 
 import ProjectForm from "./project-form";
 import {useEffect} from "react";
-import {useTheme} from "next-themes";
 
 export default function StartProject() {
-  const {resolvedTheme} = useTheme();
-
-  // Function to load Tally embeds
   const loadTallyEmbeds = () => {
     if (typeof window !== "undefined" && window.Tally) {
       window.Tally.loadEmbeds();
     }
   };
 
-  // Load Tally embeds when component mounts or theme changes
   useEffect(() => {
     loadTallyEmbeds();
 
-    // Add a class to the iframe's parent element based on the current theme
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.addedNodes.length) {
           const iframe = document.querySelector("iframe[data-tally-src]");
           if (iframe instanceof HTMLIFrameElement) {
-            // Set a data attribute on the iframe that can be used in CSS
-            iframe.setAttribute("data-theme", resolvedTheme || "dark");
-
-            // Try to access the iframe content if possible
-            try {
-              const iframeDoc =
-                iframe.contentDocument || iframe.contentWindow?.document;
-              if (iframeDoc && iframeDoc.documentElement) {
-                iframeDoc.documentElement.setAttribute(
-                  "data-theme",
-                  resolvedTheme || "dark"
-                );
-              }
-            } catch (e) {
-              console.log(
-                "Cannot access iframe content due to same-origin policy"
-              );
-            }
+            iframe.setAttribute("data-theme", "dark");
           }
         }
       });
@@ -52,12 +29,12 @@ export default function StartProject() {
     return () => {
       observer.disconnect();
     };
-  }, [resolvedTheme]);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mb-8 text-center pt-8">
-        <h2 className="text-foreground text-3xl md:text-5xl font-medium">
+      <div className="mb-8 pt-8 text-center">
+        <h2 className="text-3xl font-medium text-foreground md:text-5xl">
           Ready to Start <br />
           Your Next <span className="text-primary">Project</span>?
         </h2>

@@ -10,10 +10,12 @@ export const metadata = {
 
 export default function StartPage() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="relative min-h-screen">
       <Header />
-      <StartProject />
-      <Footer />
+      <div className="relative z-10">
+        <StartProject />
+        <Footer />
+      </div>
     </main>
   )
 }

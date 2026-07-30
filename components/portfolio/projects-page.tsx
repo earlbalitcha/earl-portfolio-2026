@@ -4,6 +4,7 @@ import Header from "@/components/landing-page/header";
 import Footer from "@/components/landing-page/footer";
 import SectionHeader from "@/components/landing-page/section-header";
 import PortfolioMasonryGridFinal from "./portfolio-masonry-grid-final";
+import ShopifyStoresGrid from "./shopify-stores-grid";
 import type {PortfolioItem} from "@/utils/csv-parser";
 
 interface ProjectsPageProps {
@@ -12,27 +13,35 @@ interface ProjectsPageProps {
 
 export default function ProjectsPage({initialData}: ProjectsPageProps) {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="relative min-h-screen">
       <Header />
-      <div className="relative">
-        <div
-          className="pointer-events-none absolute inset-x-0 top-0 z-0 h-44 bg-gradient-to-b from-primary/[0.12] to-transparent dark:from-primary/10"
-          aria-hidden
-        />
-        <div className="container relative z-10 pb-20 pt-10 md:pb-24 md:pt-14">
+      <div className="relative z-10">
+        <div className="container pb-20 pt-10 md:pb-24 md:pt-14">
           <SectionHeader
             eyebrow="Archive"
             title="All"
             titleAccent="projects"
-            description="Case studies and shipped work—React, Next.js, and Node.js apps, dashboards, APIs, automation, and internal tools—with Shopify and ecommerce examples where they apply. Open a card for details."
+            description="Case studies and shipped work—React, Next.js, Vue.js, and Node.js apps, dashboards, APIs, and integrations—with Shopify, WordPress, and ecommerce examples where they apply."
           />
 
           <div className="mt-10 md:mt-12">
             <PortfolioMasonryGridFinal items={initialData} />
           </div>
+
+          <div className="mt-20 border-t border-border pt-16 md:mt-24 md:pt-20">
+            <SectionHeader
+              eyebrow="Recent"
+              title="Shopify"
+              titleAccent="stores"
+              description="Recent Shopify storefront work — Joe & Bella is a live, shipped build. Bloom and SHOP.CO are sample themes built to showcase custom Liquid sections, OS 2.0 patterns, and conversion-focused UX."
+            />
+            <div className="mt-10 md:mt-12">
+              <ShopifyStoresGrid />
+            </div>
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </main>
   );
 }

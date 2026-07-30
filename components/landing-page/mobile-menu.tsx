@@ -2,9 +2,11 @@
 
 import {useEffect, useRef} from "react";
 import Link from "next/link";
-import {usePathname} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import {X} from "lucide-react";
 import {landingProjectsNav, landingScrollNavItems} from "./nav-config";
+import {cn} from "@/lib/utils";
+import {navigateToSection} from "@/lib/section-nav";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -14,13 +16,10 @@ interface MobileMenuProps {
 export default function MobileMenu({isOpen, onClose}: MobileMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
@@ -32,58 +31,71 @@ export default function MobileMenu({isOpen, onClose}: MobileMenuProps) {
         onClose();
       }
     };
-
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    if (isOpen) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
+  const projectsActive =
+    pathname === "/projects" || pathname?.startsWith("/projects/");
+
   return (
-    <div className="fixed inset-0 z-[100] bg-black/50 md:hidden" style={{display: isOpen ? "block" : "none"}}>
+    <div className="fixed inset-0 z-[100] bg-black/60 lg:hidden">
       <div
         ref={menuRef}
-        className="fixed top-0 right-0 h-full w-[85%] max-w-sm overflow-y-auto border-l border-border/80 bg-background shadow-xl">
-        <div className="sticky top-0 z-10 flex items-center justify-end border-b border-border/80 bg-background/95 px-4 py-3 pr-[max(1rem,env(safe-area-inset-right))] pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur-sm">
+        className="fixed inset-y-0 right-0 flex h-full w-[min(100%,20rem)] flex-col border-l border-border bg-background shadow-2xl">
+        <div className="flex items-center justify-between border-b border-border px-4 py-3 pr-[max(1rem,env(safe-area-inset-right))] pt-[max(0.75rem,env(safe-area-inset-top))]">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">
+            Menu
+          </p>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             aria-label="Close menu">
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <nav className="p-3 pb-[max(1rem,env(safe-area-inset-bottom))]" aria-label="Primary">
-          <ul className="space-y-0.5 rounded-2xl border border-border/60 bg-muted/25 p-1 dark:border-white/[0.08] dark:bg-muted/15">
+        <nav
+          className="flex-1 overflow-y-auto p-3 pb-[max(1rem,env(safe-area-inset-bottom))]"
+          aria-label="Primary">
+          <ul className="space-y-0.5">
             {landingScrollNavItems.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="block rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-background/90 hover:text-foreground dark:hover:bg-background/10"
-                  onClick={onClose}>
-                  {item.label}
-                </Link>
+              <li key={"href" in item ? item.href : item.sectionId}>
+                {"href" in item ? (
+                  <Link
+                    href={item.href}
+                    className="block rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    onClick={onClose}>
+                    {item.label}
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    className="block w-full rounded-md px-3 py-2.5 text-left text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    onClick={() => {
+                      navigateToSection(item.sectionId, pathname, router);
+                      onClose();
+                    }}>
+                    {item.label}
+                  </button>
+                )}
               </li>
             ))}
-            <li className="border-t border-border/70 pt-1 dark:border-white/[0.08]">
-              <Link
-                href={landingProjectsNav.href}
-                className={`block rounded-xl px-3 py-2.5 text-sm font-semibold transition-all ${
-                  pathname === "/projects" || pathname?.startsWith("/projects/")
-                    ? "bg-primary text-primary-foreground shadow-md shadow-primary/25"
-                    : "text-muted-foreground hover:bg-background/90 hover:text-foreground dark:hover:bg-background/10"
-                }`}
-                onClick={onClose}>
-                {landingProjectsNav.label}
-              </Link>
-            </li>
           </ul>
+          <Link
+            href={landingProjectsNav.href}
+            className={cn(
+              "mt-4 block rounded-md px-3 py-2.5 text-center text-sm font-semibold transition-colors",
+              projectsActive
+                ? "bg-primary text-primary-foreground"
+                : "border border-border bg-card text-foreground hover:border-primary/40",
+            )}
+            onClick={onClose}>
+            {landingProjectsNav.label}
+          </Link>
         </nav>
       </div>
     </div>

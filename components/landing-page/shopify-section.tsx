@@ -1,47 +1,62 @@
 "use client";
 
-import {Check} from "lucide-react";
+import {ShoppingBag, LayoutTemplate, Globe} from "lucide-react";
 import SectionHeader from "./section-header";
 
-const shopifyExperience = [
-  "Shopify Online Store 2.0",
-  "Liquid development",
-  "Custom sections",
-  "JSON templates",
-  "Metafields",
-  "Theme customization",
-  "PageFly",
-  "Responsive design",
-  "Store speed optimization",
-  "Product page development",
-  "Landing pages",
-  "Shopify app integrations",
-  "Shopify GraphQL API",
+const platforms = [
+  {
+    icon: ShoppingBag,
+    title: "Shopify",
+    body: "Liquid themes, Online Store 2.0, metafields, and API integrations.",
+    tags: ["Liquid", "Themes", "GraphQL Admin", "Apps"],
+  },
+  {
+    icon: LayoutTemplate,
+    title: "WordPress",
+    body: "Site builds, theme enhancements, and content workflows.",
+    tags: ["Themes", "CMS", "Integrations"],
+  },
+  {
+    icon: Globe,
+    title: "Squarespace",
+    body: "Marketing and business sites with ongoing maintenance.",
+    tags: ["Landing pages", "Responsive", "SEO"],
+  },
 ];
-
-const surfaceCard =
-  "group rounded-2xl border border-border/90 bg-gradient-to-br from-card to-muted/15 p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 dark:to-muted/10 md:p-8";
 
 export default function ShopifySection() {
   return (
-    <section id="shopify" className="my-20 scroll-mt-24 space-y-10 md:space-y-14">
+    <section id="shopify" className="my-20 scroll-mt-24 md:my-24">
       <SectionHeader
-        eyebrow="Ecommerce"
-        title="Shopify"
+        eyebrow="CMS & Ecommerce"
+        title="Platform"
         titleAccent="experience"
-        description="Hands-on storefront work—Online Store 2.0, Liquid, performance, and integrations—so Shopify-focused teams can see depth at a glance."
+        description="Shopify, WordPress, and Squarespace—themes, customization, and API connections."
       />
 
-      <div className={surfaceCard}>
-        <h3 className="text-lg font-semibold text-foreground">Shopify experience</h3>
-        <ul className="mt-4 grid grid-cols-1 gap-2.5 text-sm text-muted-foreground sm:grid-cols-2">
-          {shopifyExperience.map((item) => (
-            <li key={item} className="flex gap-2">
-              <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
+      <div className="grid gap-4 md:grid-cols-3">
+        {platforms.map(({icon: Icon, title, body, tags}) => (
+          <article
+            key={title}
+            className="surface-glass flex flex-col p-5 md:p-6">
+            <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-primary/25 bg-primary/10 text-primary">
+              <Icon className="h-5 w-5" />
+            </span>
+            <h3 className="font-display mt-4 text-lg font-semibold text-foreground">
+              {title}
+            </h3>
+            <p className="mt-2 flex-1 text-sm text-muted-foreground">{body}</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {tags.map((label) => (
+                <span
+                  key={label}
+                  className="rounded-md border border-border bg-muted/40 px-2.5 py-1 text-xs font-medium text-foreground">
+                  {label}
+                </span>
+              ))}
+            </div>
+          </article>
+        ))}
       </div>
     </section>
   );

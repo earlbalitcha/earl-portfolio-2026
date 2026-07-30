@@ -1,34 +1,25 @@
 "use client";
 
 import type React from "react";
-
 import {useState, useEffect} from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {usePathname, useRouter} from "next/navigation";
 import {Menu} from "lucide-react";
-import ThemeToggle from "./theme-toggle";
-import {useTheme} from "next-themes";
 import MobileMenu from "./mobile-menu";
 import {ScrollProgress} from "../ui/scroll-progress";
 import {landingProjectsNav, landingScrollNavItems} from "./nav-config";
+import {cn} from "@/lib/utils";
+import {navigateHome, navigateToSection} from "@/lib/section-nav";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const {resolvedTheme} = useTheme();
   const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 12);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 8);
     window.addEventListener("scroll", handleScroll, {passive: true});
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
@@ -36,86 +27,95 @@ export default function Header() {
 
   const handleLogoClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    router.push("/");
+    navigateHome(pathname, router);
   };
 
-  const logoSrc =
-    mounted && resolvedTheme === "dark" ? "/darkmode.png" : "/lightmode.png";
+  const projectsActive =
+    pathname === "/projects" || pathname?.startsWith("/projects/");
+  const contactActive = pathname === "/contact";
 
   return (
     <>
       <header
-        className={`sticky top-0 z-40 w-full transition-[box-shadow,background-color,border-color] duration-300 ${
+        className={cn(
+          "sticky top-0 z-40 w-full border-b transition-colors duration-300",
           isScrolled
-            ? "border-b border-border/70 bg-background/80 shadow-sm shadow-black/[0.04] backdrop-blur-xl dark:bg-background/75 dark:shadow-black/40"
-            : "border-b border-transparent bg-background/35 backdrop-blur-md dark:bg-background/20"
-        }`}>
-        <div className="container py-3 md:py-3.5">
-          <div className="flex items-center justify-between gap-3">
-            <Link
-              href="/"
-              className="flex shrink-0 items-center rounded-lg outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring"
-              onClick={handleLogoClick}>
-              {mounted ? (
-                <Image
-                  src={logoSrc || "/placeholder.svg"}
-                  alt="Earl Balitcha — portfolio"
-                  width={300}
-                  height={50}
-                  className="h-11 w-auto md:h-12"
-                  priority
-                />
+            ? "border-border bg-background/92 backdrop-blur-xl"
+            : "border-transparent bg-background/75 backdrop-blur-md",
+        )}>
+        <ScrollProgress />
+        <div className="container flex h-16 items-center justify-between gap-4 md:h-[4.25rem]">
+          <Link
+            href="/"
+            className="flex shrink-0 items-center outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring"
+            onClick={handleLogoClick}>
+            <Image
+              src="/darkmode.png"
+              alt="Earl Balitcha — portfolio"
+              width={300}
+              height={50}
+              className="h-9 w-auto md:h-10"
+              priority
+            />
+          </Link>
+
+          <nav
+            className="hidden items-center gap-0.5 lg:flex"
+            aria-label="Primary">
+            {landingScrollNavItems.map((item) =>
+              "href" in item ? (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "px-3 py-2 text-[13px] font-medium transition-colors",
+                    item.href === "/contact" && contactActive
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
+                  )}>
+                  {item.label}
+                </Link>
               ) : (
-                <div className="h-11 w-[220px] md:h-12" aria-hidden />
-              )}
+                <button
+                  key={item.sectionId}
+                  type="button"
+                  onClick={() =>
+                    navigateToSection(item.sectionId, pathname, router)
+                  }
+                  className="px-3 py-2 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground">
+                  {item.label}
+                </button>
+              ),
+            )}
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <Link
+              href={landingProjectsNav.href}
+              className={cn(
+                "hidden rounded-md px-3.5 py-2 text-[13px] font-semibold transition-colors sm:inline-flex",
+                projectsActive
+                  ? "bg-primary text-primary-foreground"
+                  : "border border-border bg-card text-foreground hover:border-primary/40 hover:text-primary",
+              )}>
+              {landingProjectsNav.label}
             </Link>
 
-            <div className="flex items-center gap-2 md:gap-3">
-              <ScrollProgress />
-
-              <nav
-                className="hidden items-center rounded-2xl border border-border/60 bg-muted/40 p-1 shadow-inner shadow-black/[0.03] backdrop-blur-sm dark:border-white/[0.08] dark:bg-muted/25 md:flex"
-                aria-label="Primary">
-                <ul className="flex items-center gap-0.5">
-                  {landingScrollNavItems.map((item) => (
-                    <li key={item.href}>
-                      <Link
-                        href={item.href}
-                        className="block rounded-xl px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-background/90 hover:text-foreground dark:hover:bg-background/10">
-                        {item.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-                <span className="mx-1 hidden h-5 w-px bg-border/80 sm:block" aria-hidden />
-                <Link
-                  href={landingProjectsNav.href}
-                  className={`shrink-0 rounded-xl px-4 py-2 text-sm font-semibold transition-all ${
-                    pathname === "/projects" || pathname?.startsWith("/projects/")
-                      ? "bg-primary text-primary-foreground shadow-md shadow-primary/25"
-                      : "text-muted-foreground hover:bg-background/90 hover:text-foreground dark:hover:bg-background/10"
-                  }`}>
-                  {landingProjectsNav.label}
-                </Link>
-              </nav>
-
-              <div className="flex items-center gap-1 rounded-2xl border border-border/60 bg-muted/30 p-0.5 dark:border-white/[0.08] dark:bg-muted/20">
-                <ThemeToggle className="rounded-xl" />
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setMobileMenuOpen(true)}
-                className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/60 bg-muted/30 text-foreground transition-colors hover:bg-muted/50 md:hidden dark:border-white/[0.08]"
-                aria-label="Open menu">
-                <Menu className="h-5 w-5" />
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card text-foreground transition-colors hover:bg-muted lg:hidden"
+              aria-label="Open menu">
+              <Menu className="h-5 w-5" />
+            </button>
           </div>
         </div>
       </header>
 
-      <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+      <MobileMenu
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+      />
     </>
   );
 }

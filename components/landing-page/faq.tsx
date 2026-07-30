@@ -1,158 +1,128 @@
 "use client";
 
-import Link from "next/link";
-import {Check} from "lucide-react";
+import {Check, GraduationCap, Briefcase} from "lucide-react";
 import SectionHeader from "./section-header";
 
 const industries = [
-  "SaaS & internal web platforms",
-  "Ecommerce & Shopify stores",
-  "Hospitality & property management",
-  "Operations management & work order systems",
-  "CRM & business automation",
-  "Marketing sites & lead generation",
+  "SaaS & internal platforms",
+  "Ecommerce & CMS",
+  "Hospitality & property ops",
+  "CRM & automation",
 ];
 
-const whatIBring = [
-  "Full-stack web development with React, Next.js, Node.js, and TypeScript—shipping features that map to revenue, retention, or operational savings.",
-  "REST and GraphQL APIs, databases, auth, and real-time systems that reduce manual handoffs and support clearer ownership of data.",
-  "Shopify and ecommerce expertise (themes, Liquid, integrations) aligned with merchandising and conversion goals.",
-  "Strong problem-solving skills",
-  "Real-world third-party API integration experience",
-  "Enterprise application development",
-  "Business process automation",
-  "Performance optimization with measurable impact on load time and iteration speed",
-  "Mobile-first development",
-  "Clean and maintainable code",
-  "Ability to work independently",
-  "Fast learner and adaptable developer",
+const strengths = [
+  "Full-stack React / Next / Vue / Node",
+  "REST, GraphQL & realtime",
+  "Shopify, WordPress & Squarespace",
+  "Dashboards & third-party APIs",
 ];
 
-const surfaceCard =
-  "group rounded-2xl border border-border/90 bg-gradient-to-br from-card to-muted/15 p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 dark:to-muted/10 md:p-8";
+const path = [
+  {
+    title: "Full Stack Developer",
+    place: "Falcon Global Services · 2024–2026 · Tarlac City",
+    icon: Briefcase,
+  },
+  {
+    title: "BS Information Technology",
+    place: "Central Luzon State University · 2019–2024",
+    icon: GraduationCap,
+  },
+];
 
 export default function AboutSection() {
   return (
-    <section id="about" className="my-20 scroll-mt-24 space-y-10 md:space-y-14">
+    <section id="about" className="my-20 scroll-mt-24 md:my-24">
       <SectionHeader
         eyebrow="Profile"
         title="About"
         titleAccent="me"
-        description="Professional summary, background, and the kinds of products and teams I work best with."
+        description="Web apps, dashboards, SaaS platforms, and CMS-driven products."
       />
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className={surfaceCard}>
-          <h3 className="text-lg font-semibold text-foreground">
-            Professional summary
-          </h3>
-          <div className="mt-4 space-y-4 text-sm leading-relaxed text-muted-foreground md:text-base">
-            <p>
-              Full Stack Developer with{" "}
-              <span className="font-medium text-foreground">three years</span>{" "}
-              of professional experience building scalable web and mobile applications
-              with{" "}
-              <span className="font-medium text-foreground">
-                React.js, Next.js, Node.js, TypeScript, and React Native
-              </span>
-              .
-            </p>
-            <p>
-              Skilled across frontend and backend—components, data fetching,
-              APIs, databases, auth, real-time systems, deployments, and
-              automation. That work spans enterprise dashboards and SaaS;{" "}
-              <span className="font-medium text-foreground">Shopify</span>{" "}
-              (Liquid, themes, integrations) is part of the toolkit when
-              projects need ecommerce alongside internal tools.
-            </p>
+      <div className="grid gap-5 lg:grid-cols-2">
+        <div className="surface-glass p-6 md:p-7">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+            Summary
+          </p>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground md:text-base">
+            Full Stack Developer with{" "}
+            <span className="font-semibold text-foreground">2 years</span> of
+            experience building scalable web applications using{" "}
+            <span className="font-semibold text-foreground">
+              React, Next.js, Vue.js, Node.js, TypeScript, and Python
+            </span>
+            . Comfortable across frontend and backend, API integrations, and CMS
+            platforms including Shopify, WordPress, and Squarespace—shipping
+            dashboards, SaaS platforms, and automation-driven apps with realtime
+            features and CI/CD.
+          </p>
+          <div className="mt-6 grid grid-cols-3 gap-3 border-t border-border pt-5">
+            {[
+              {n: "2+", l: "Years"},
+              {n: "FS", l: "Full stack"},
+              {n: "CI/CD", l: "Deploys"},
+            ].map((s) => (
+              <div key={s.l} className="text-center">
+                <p className="font-display text-2xl font-semibold gradient-text">
+                  {s.n}
+                </p>
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  {s.l}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
-        <div className={surfaceCard}>
-          <h3 className="text-lg font-semibold text-foreground">About me</h3>
-          <div className="mt-4 space-y-4 text-sm leading-relaxed text-muted-foreground md:text-base">
-            <p>
-              Based in the{" "}
-              <span className="font-medium text-foreground">Philippines</span>,
-              I ship web and mobile apps, ecommerce, dashboards, and
-              automation—frontend, backend, integrations, and cloud included.
+
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+          <div className="surface-glass p-5">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+              Industries
             </p>
-            <p>
-              I like turning messy business problems into clear software:
-              customer-facing stores, internal tools, API wiring, and fewer
-              manual steps.
+            <ul className="mt-3 space-y-2">
+              {industries.map((item) => (
+                <li
+                  key={item}
+                  className="flex gap-2 text-sm text-muted-foreground">
+                  <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="surface-glass p-5">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+              Strengths
             </p>
+            <ul className="mt-3 space-y-2">
+              {strengths.map((item) => (
+                <li
+                  key={item}
+                  className="flex gap-2 text-sm text-muted-foreground">
+                  <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                  {item}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-stretch">
-        <div className={surfaceCard}>
-          <h3 className="text-lg font-semibold text-foreground">Industries</h3>
-          <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
-            {industries.map((item) => (
-              <li key={item} className="flex gap-2">
-                <Check
-                  className="mt-0.5 h-4 w-4 shrink-0 text-primary"
-                  aria-hidden
-                />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className={surfaceCard}>
-          <h3 className="text-lg font-semibold text-foreground">
-            What I bring
-          </h3>
-          <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
-            {whatIBring.map((item) => (
-              <li key={item} className="flex gap-2">
-                <Check
-                  className="mt-0.5 h-4 w-4 shrink-0 text-primary"
-                  aria-hidden
-                />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className={surfaceCard}>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary/90">
-            Education & background
-          </p>
-          <div className="mt-6 space-y-6 text-sm leading-relaxed text-muted-foreground md:text-base">
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+        {path.map(({title, place, icon: Icon}) => (
+          <div
+            key={title}
+            className="surface-glass flex items-start gap-3 p-4 md:p-5">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary/10 text-primary">
+              <Icon className="h-4 w-4" />
+            </span>
             <div>
-              <p className="font-semibold text-foreground">Full Stack Developer</p>
-              <p className="mt-1">Falcon Global Services</p>
-              <p className="mt-1 text-xs text-muted-foreground/90 sm:text-sm">
-                2023 – 2026 · Tarlac City
-              </p>
-            </div>
-            <div className="border-t border-border/60 pt-6">
-              <p className="font-semibold text-foreground">
-                Bachelor of Science in Information Technology
-              </p>
-              <p className="mt-1">Central Luzon State University</p>
-              <p className="mt-1 text-xs text-muted-foreground/90 sm:text-sm">
-                2019 – 2023 · Science City of Muñoz, Nueva Ecija
-              </p>
-            </div>
-            <div className="border-t border-border/60 pt-6">
-              <p className="font-semibold text-foreground">Secondary</p>
-              <p className="mt-1">Victoria National High School</p>
-              <p className="mt-1 text-xs text-muted-foreground/90 sm:text-sm">
-                2013 – 2019 · Victoria, Tarlac
-              </p>
-            </div>
-            <div className="border-t border-border/60 pt-6">
-              <p className="font-semibold text-foreground">Elementary</p>
-              <p className="mt-1">Masalasa Elementary School</p>
-              <p className="mt-1 text-xs text-muted-foreground/90 sm:text-sm">
-                2007 – 2013 · Masalasa, Victoria, Tarlac
-              </p>
+              <p className="font-semibold text-foreground">{title}</p>
+              <p className="mt-0.5 text-sm text-muted-foreground">{place}</p>
             </div>
           </div>
-        </div>
+        ))}
       </div>
     </section>
   );

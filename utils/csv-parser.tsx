@@ -12,6 +12,7 @@ export interface PortfolioItem {
 
 const CACHE_KEY = "__portfolioCacheV8";
 const USE_FALLBACK_ONLY = false;
+const PORTFOLIO_CSV_PATH = "/data/portfolio-sample.csv";
 
 export function resetPortfolioCache() {
   if (typeof window !== "undefined") {
@@ -23,6 +24,26 @@ export function resetPortfolioCache() {
     delete (window as any).__portfolioCacheV7;
     delete (window as any).__portfolioCacheV8;
   }
+}
+
+async function loadPortfolioCsvText(): Promise<string> {
+  if (typeof window === "undefined") {
+    const {readFile} = await import("node:fs/promises");
+    const {join} = await import("node:path");
+    const filePath = join(
+      process.cwd(),
+      "public",
+      "data",
+      "portfolio-sample.csv",
+    );
+    return readFile(filePath, "utf-8");
+  }
+
+  const response = await fetch(PORTFOLIO_CSV_PATH);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch portfolio CSV: ${response.status}`);
+  }
+  return response.text();
 }
 
 export async function fetchPortfolioData(): Promise<PortfolioItem[]> {
@@ -37,14 +58,7 @@ export async function fetchPortfolioData(): Promise<PortfolioItem[]> {
   }
 
   try {
-    const response = await fetch("/data/portfolio-sample.csv", {
-      cache: typeof window === "undefined" ? "no-store" : "default",
-    });
-
-    if (!response.ok)
-      throw new Error(`Failed to fetch portfolio CSV: ${response.status}`);
-
-    const csvText = await response.text();
+    const csvText = await loadPortfolioCsvText();
     const parsedData = parseCSV(csvText);
 
     if (!Array.isArray(parsedData) || parsedData.length === 0) {

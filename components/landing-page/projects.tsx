@@ -1,6 +1,6 @@
 "use client";
 
-import {useState, useEffect, useMemo} from "react";
+import {useState, useEffect} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {ArrowUpRight} from "lucide-react";
@@ -8,20 +8,27 @@ import ProjectPopup from "../portfolio/project-popup";
 import {fetchPortfolioData, type PortfolioItem} from "@/utils/csv-parser";
 import SectionHeader from "./section-header";
 
+const FEATURED_SLUGS = [
+  "the-hostdesk",
+  "csr-dashboard",
+  "xmg-real-estate",
+] as const;
+
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<PortfolioItem | null>(
-    null
+    null,
   );
   const [projects, setProjects] = useState<PortfolioItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeIdx, setActiveIdx] = useState<number | null>(0); // default expand first on desktop
 
   useEffect(() => {
     async function loadProjects() {
       try {
         const data = await fetchPortfolioData();
-        // show up to 6 items
-        setProjects(data.slice(0, 6));
+        const featured = FEATURED_SLUGS.map((slug) =>
+          data.find((p) => p.slug === slug),
+        ).filter(Boolean) as PortfolioItem[];
+        setProjects(featured);
       } catch (error) {
         console.error("Error loading projects:", error);
       } finally {
@@ -31,188 +38,44 @@ export default function Projects() {
     loadProjects();
   }, []);
 
-  const openProjectPopup = (project: PortfolioItem) =>
-    setSelectedProject(project);
-  const closeProjectPopup = () => setSelectedProject(null);
-
-  const baseCardStyle = useMemo(
-    () => ({
-      transition: "flex-grow 500ms cubic-bezier(0.05, 0.61, 0.41, 0.95)",
-      minWidth: 160, // wider collapsed
-    }),
-    []
-  );
-
   return (
-    <section id="projects" className="my-20 overflow-hidden scroll-mt-24">
-      <SectionHeader
-        eyebrow="Work"
-        title="Featured"
-        titleAccent="projects"
-        description="Selected builds—React and Next.js apps, Node backends, dashboards, automation, and integrations—with Shopify and ecommerce cases when the portfolio includes them."
-      />
+    <section
+      id="projects"
+      className="relative z-20 w-full scroll-mt-24 bg-background">
+      <div className="absolute inset-0 bg-background" aria-hidden />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/35 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-border" />
 
-      {/* Mobile: stacked list (< md) */}
-      <div className="md:hidden grid grid-cols-1 gap-6">
-        {isLoading
-          ? Array.from({length: 6}).map((_, index) => (
-              <div
-                key={`skeleton-m-${index}`}
-                className="card overflow-hidden shadow-lg animate-pulse">
-                <div className="h-48 bg-muted" />
-                <div className="p-4">
-                  <div className="h-6 w-2/3 bg-muted rounded mb-2" />
-                  <div className="h-4 w-full bg-muted rounded" />
-                </div>
-              </div>
-            ))
-          : projects.map((project) => (
-              <button
-                key={project.slug}
-                className="text-left card overflow-hidden shadow-lg transform transition-transform duration-300 hover:scale-[1.02]"
-                onClick={() => openProjectPopup(project)}>
-                <div className="relative overflow-hidden">
-                  <Image
-                    src={
-                      project.mainImage ||
-                      "/placeholder.svg?height=600&width=800&query=project"
-                    }
-                    alt={project.title}
-                    width={600}
-                    height={400}
-                    className="w-full h-48 object-cover"
-                  />
-                </div>
-                <div className="p-4 md:p-6">
-                  <h3 className="text-xl font-semibold text-foreground">
-                    {project.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm mt-1 mb-4">
-                    {project.shortDescription}
-                  </p>
-                  {Array.isArray(project.categories) &&
-                    project.categories.length > 0 && (
-                      <div className="mt-2 mb-3 flex flex-wrap gap-2">
-                        {project.categories.map((tag) => (
-                          <span
-                            key={tag}
-                            className="inline-flex items-center rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-foreground">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  <span className="inline-flex items-center text-primary text-sm font-medium group">
-                    Visit site
-                    <ArrowUpRight className="w-4 h-4 ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </span>
-                </div>
-              </button>
-            ))}
-      </div>
+      <div className="container relative py-20 md:py-24">
+        <SectionHeader
+          eyebrow="Work"
+          title="Featured"
+          titleAccent="projects"
+          description="HostDesk, CSR Dashboard & XMG Real Estate."
+        />
 
-      {/* Tablet & Laptop: grid (md to lg), keep same look, 2 columns */}
-      <div className="hidden md:grid xl:hidden grid-cols-1 md:grid-cols-2 gap-6">
-        {isLoading
-          ? Array.from({length: 6}).map((_, i) => (
-              <div
-                key={`skeleton-g-${i}`}
-                className="card overflow-hidden shadow-lg rounded-2xl animate-pulse h-[22rem]">
-                <div className="h-full w-full bg-muted" />
-              </div>
-            ))
-          : projects.map((project) => (
-              <button
-                key={project.slug}
-                className="relative rounded-2xl overflow-hidden shadow-lg text-left"
-                onClick={() => openProjectPopup(project)}>
-                <div className="relative h-[22rem] w-full">
-                  <Image
-                    src={
-                      project.mainImage ||
-                      "/placeholder.svg?height=600&width=800&query=project"
-                    }
-                    alt={project.title}
-                    fill
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                    className="object-cover transition-transform duration-500 hover:scale-105"
-                  />
-
-                  {/* Overlay: ALWAYS visible (dark background) */}
-                  <div
-                    className={[
-                      "absolute inset-x-0 bottom-0",
-                      "bg-black/50 backdrop-blur-sm",
-                      "p-4 md:p-6 text-white",
-                      "opacity-100 translate-y-0",
-                      "transition-[opacity,transform] duration-500 ease-out",
-                    ].join(" ")}>
-                    <h3 className="font-semibold text-2xl md:text-3xl">
-                      {project.title}
-                    </h3>
-                    <p className="mt-1 text-sm md:text-base">
-                      {project.shortDescription}
-                    </p>
-
-                    {Array.isArray(project.categories) &&
-                      project.categories.length > 0 && (
-                        <div className="mt-3 flex flex-wrap gap-2">
-                          {project.categories.map((tag) => (
-                            <span
-                              key={tag}
-                              className="inline-flex items-center rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-gray-800 shadow">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-
-                    <span className="mt-4 inline-flex items-center text-primary text-sm font-medium underline-offset-2 hover:underline">
-                      Visit site <ArrowUpRight className="w-4 h-4 ml-1" />
-                    </span>
+        <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {isLoading
+            ? Array.from({length: 3}).map((_, index) => (
+                <div
+                  key={`skeleton-${index}`}
+                  className="flex h-full flex-col animate-pulse overflow-hidden rounded-2xl border border-border bg-card">
+                  <div className="h-52 w-full shrink-0 bg-muted/40 sm:h-56" />
+                  <div className="space-y-3 border-t border-border p-5">
+                    <div className="h-3 w-24 rounded bg-muted/50" />
+                    <div className="h-5 w-3/4 rounded bg-muted/50" />
+                    <div className="h-4 w-full rounded bg-muted/40" />
                   </div>
                 </div>
-              </button>
-            ))}
-      </div>
-
-      <div className="hidden xl:flex xl:h-[22rem] gap-4">
-        {isLoading
-          ? Array.from({length: 6}).map((_, i) => (
-              <div
-                key={`skeleton-d-${i}`}
-                className="card overflow-hidden shadow-lg rounded-2xl animate-pulse"
-                style={{...baseCardStyle, flexGrow: 1}}>
-                <div className="h-full w-full bg-muted" />
-              </div>
-            ))
-          : projects.map((project, idx) => {
-              const isActive = activeIdx === idx;
-              return (
-                <div
+              ))
+            : projects.map((project, index) => (
+                <button
                   key={project.slug}
-                  role="button"
-                  tabIndex={0}
-                  className="relative card overflow-hidden shadow-lg rounded-2xl cursor-pointer group"
-                  style={{
-                    ...baseCardStyle,
-                    flexGrow: isActive ? 12 : 6, // wider inactive
-                    maxWidth: isActive ? "100%" : 420,
-                  }}
-                  onClick={() => {
-                    if (isActive) {
-                      openProjectPopup(project);
-                    } else {
-                      setActiveIdx(idx);
-                    }
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      if (isActive) openProjectPopup(project);
-                      else setActiveIdx(idx);
-                    }
-                  }}>
-                  <div className="relative h-full w-full">
+                  type="button"
+                  className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card text-left transition-colors hover:border-primary/30"
+                  onClick={() => setSelectedProject(project)}>
+                  {/* Equal frame for every card; contain keeps the full screenshot */}
+                  <div className="relative h-52 w-full shrink-0 bg-muted/50 sm:h-56">
                     <Image
                       src={
                         project.mainImage ||
@@ -220,90 +83,55 @@ export default function Projects() {
                       }
                       alt={project.title}
                       fill
-                      sizes="(min-width: 1280px) 33vw, 100vw"
-                      className={[
-                        "object-cover transition-[transform,opacity] duration-400",
-                        isActive
-                          ? "scale-100 opacity-100"
-                          : "scale-110 opacity-90",
-                      ].join(" ")}
+                      sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
+                      className="object-contain object-center p-3"
                     />
-
-                    {/* Overlay content — FADE IN when active */}
-                    <div
-                      className={[
-                        "absolute inset-x-0 bottom-0",
-                        "bg-black/50 backdrop-blur-sm",
-                        "px-4 md:px-6 py-3 text-white",
-                        "transition-[opacity,transform] duration-500 ease-in",
-                        isActive
-                          ? "opacity-100 translate-y-0"
-                          : "opacity-0 translate-y-2 pointer-events-none",
-                        "will-change-opacity will-change-transform",
-                      ].join(" ")}
-                      style={{transitionDelay: isActive ? "120ms" : "0ms"}}
-                      aria-hidden={!isActive}>
-                      <h3
-                        className={[
-                          "font-semibold",
-                          isActive ? "text-lg md:text-xl" : "text-lg",
-                          "transition-all",
-                        ].join(" ")}>
-                        {project.title}
-                      </h3>
-
-                      <p className="mt-1 text-sm md:text-md">
-                        {project.shortDescription}
-                      </p>
-
-                      {isActive &&
-                        Array.isArray(project.categories) &&
-                        project.categories.length > 0 && (
-                          <div className="mt-3 flex items-center justify-between">
-                            <div className="flex flex-wrap gap-2">
-                              {project.categories.map((tag) => (
-                                <span
-                                  key={tag}
-                                  className="inline-flex items-center rounded-full bg-white/90 px-2 text-[11px] font-medium text-gray-800 shadow">
-                                  {tag}
-                                </span>
-                              ))}
-                            </div>
-
-                            <a
-                              href={project.projectUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="ml-4 inline-flex items-center text-nowrap text-white text-sm font-medium underline-offset-2 hover:underline"
-                              onClick={(e) => e.stopPropagation()}>
-                              Visit site{" "}
-                              <ArrowUpRight className="w-4 h-4 ml-1" />
-                            </a>
-                          </div>
-                        )}
-                    </div>
-
-                    {!isActive && (
-                      <div className="absolute left-3 bottom-3">
-                        <span className="inline-flex items-center max-w-[11rem] truncate rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-gray-800 shadow">
-                          {project.title}
-                        </span>
-                      </div>
-                    )}
                   </div>
-                </div>
-              );
-            })}
+
+                  <div className="flex flex-1 flex-col border-t border-border bg-card p-5 md:p-6">
+                    <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
+                      0{index + 1} — Featured
+                    </p>
+                    <h3 className="font-display text-lg font-semibold leading-snug text-foreground md:text-xl">
+                      {project.title}
+                    </h3>
+                    <p className="mt-2 line-clamp-2 flex-1 text-sm text-muted-foreground">
+                      {project.shortDescription}
+                    </p>
+
+                    {Array.isArray(project.categories) &&
+                      project.categories.length > 0 && (
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {project.categories.slice(0, 3).map((tag) => (
+                            <span
+                              key={tag}
+                              className="inline-flex items-center rounded-md border border-border bg-muted/40 px-2.5 py-1 text-xs font-medium text-muted-foreground">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                    <span className="mt-4 inline-flex items-center text-sm font-medium text-primary">
+                      View project
+                      <ArrowUpRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </span>
+                  </div>
+                </button>
+              ))}
+        </div>
+
+        <div className="mt-10 flex justify-center">
+          <Link href="/projects" className="btn-primary">
+            View all projects
+          </Link>
+        </div>
       </div>
 
-      <div className="flex justify-center mt-8">
-        <Link href="/projects" className="btn-primary">
-          View all projects
-        </Link>
-      </div>
-
-      {/* Project Popup */}
-      <ProjectPopup project={selectedProject} onClose={closeProjectPopup} />
+      <ProjectPopup
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
     </section>
   );
 }

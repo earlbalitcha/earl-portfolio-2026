@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import {Github, Linkedin, Mail} from "lucide-react";
+import {usePathname, useRouter} from "next/navigation";
+import {Linkedin, Mail} from "lucide-react";
+import {navigateHome, navigateToSection} from "@/lib/section-nav";
 
 const social = [
   {
-    href: "www.linkedin.com/in/earl-gerald-balitcha-a58b73407",
+    href: "https://www.linkedin.com/in/earl-gerald-balitcha-a58b73407",
     label: "LinkedIn",
     icon: Linkedin,
   },
@@ -13,37 +15,40 @@ const social = [
 ] as const;
 
 const quickLinks = [
-  {href: "/", label: "Home"},
-  {href: "/projects", label: "Projects"},
-  {href: "/#about", label: "About"},
-  {href: "/#shopify", label: "Shopify"},
-  {href: "/#contact", label: "Contact"},
-] as const;
+  {type: "home" as const, label: "Home"},
+  {type: "route" as const, href: "/projects", label: "Projects"},
+  {type: "section" as const, sectionId: "about", label: "About"},
+  {type: "section" as const, sectionId: "approach", label: "Approach"},
+  {type: "route" as const, href: "/contact", label: "Contact"},
+];
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const pathname = usePathname();
+  const router = useRouter();
 
   return (
-    <footer className="relative border-t border-border/60 bg-gradient-to-b from-muted/35 to-background pt-12 pb-10 dark:from-muted/12 dark:to-background md:pt-14 md:pb-12">
+    <footer className="relative z-20 w-full border-t border-border bg-background pt-12 pb-10 md:pt-14 md:pb-12">
+      <div className="absolute inset-0 bg-background" aria-hidden />
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/35 to-transparent"
         aria-hidden
       />
-      <div className="container">
+
+      <div className="container relative">
         <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between lg:gap-12">
           <div className="max-w-md">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary/90">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">
               Earl Balitcha
             </p>
-            <p className="mt-3 text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
-              <span className="bg-gradient-to-r from-primary via-violet-500 to-fuchsia-500 bg-clip-text text-transparent">
-                Full Stack
-              </span>{" "}
+            <p className="font-display mt-3 text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+              <span className="gradient-text">Full Stack</span>{" "}
               <span className="text-foreground">Developer</span>
             </p>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground md:text-base">
-              Web apps, APIs, and dashboards with TypeScript—plus Shopify and
-              ecommerce when the scope needs a storefront.
+              Web apps, APIs, and dashboards with React, Next.js, Vue.js &
+              TypeScript—plus Shopify, WordPress, and Squarespace when the scope
+              needs a CMS or storefront.
             </p>
             <p className="mt-8 text-xs text-muted-foreground">
               © {year} Earl Gerald R. Balitcha. All rights reserved.
@@ -52,17 +57,45 @@ export default function Footer() {
 
           <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-10 lg:flex-col lg:items-end">
             <nav aria-label="Footer" className="flex flex-wrap gap-2">
-              {quickLinks.map(({href, label}) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="rounded-xl border border-border/60 bg-muted/30 px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:bg-muted/50 hover:text-foreground dark:border-white/[0.08] dark:bg-muted/20">
-                  {label}
-                </Link>
-              ))}
+              {quickLinks.map((item) => {
+                if (item.type === "home") {
+                  return (
+                    <button
+                      key={item.label}
+                      type="button"
+                      onClick={() => navigateHome(pathname, router)}
+                      className="rounded-md border border-border bg-muted/40 px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:bg-muted/50 hover:text-foreground">
+                      {item.label}
+                    </button>
+                  );
+                }
+
+                if (item.type === "section") {
+                  return (
+                    <button
+                      key={item.sectionId}
+                      type="button"
+                      onClick={() =>
+                        navigateToSection(item.sectionId, pathname, router)
+                      }
+                      className="rounded-md border border-border bg-muted/40 px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:bg-muted/50 hover:text-foreground">
+                      {item.label}
+                    </button>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="rounded-md border border-border bg-muted/40 px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:bg-muted/50 hover:text-foreground">
+                    {item.label}
+                  </Link>
+                );
+              })}
             </nav>
 
-            <div className="flex items-center gap-1 rounded-2xl border border-border/60 bg-muted/30 p-1 dark:border-white/[0.08] dark:bg-muted/20">
+            <div className="flex items-center gap-1 rounded-lg border border-border bg-muted/30 p-1">
               {social.map(({href, label, icon: Icon}) => (
                 <Link
                   key={label}
@@ -71,7 +104,7 @@ export default function Footer() {
                   rel={
                     href.startsWith("http") ? "noopener noreferrer" : undefined
                   }
-                  className="flex h-10 w-10 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-background/90 hover:text-primary dark:hover:bg-background/10"
+                  className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-background hover:text-primary"
                   aria-label={label}>
                   <Icon className="h-5 w-5 shrink-0" aria-hidden />
                 </Link>

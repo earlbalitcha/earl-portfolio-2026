@@ -1,138 +1,290 @@
 "use client";
 
-import {Code2, Server, Smartphone, ShoppingCart, Plug, Rocket, Wrench, BarChart3, Sparkles, Database} from "lucide-react";
-import SectionHeader from "@/components/landing-page/section-header";
+import type {LucideIcon} from "lucide-react";
+import {
+  Atom,
+  Hexagon,
+  Database,
+  Wind,
+  ShoppingBag,
+  Container,
+  Cloud,
+  GitBranch,
+  Smartphone,
+  Server,
+  Braces,
+  Code2,
+  Boxes,
+  Workflow,
+} from "lucide-react";
+import {cn} from "@/lib/utils";
+import {ScrollPinned} from "@/components/landing-page/scroll-pinned";
 
-const skillCategories: {
+type StackItem = {
+  name: string;
+  mark?: string;
+  markClass?: string;
+  icon?: LucideIcon;
+  iconClass?: string;
+};
+
+type Layer = {
+  id: string;
   title: string;
-  icon: typeof Code2;
-  items: string[];
-}[] = [
+  blurb: string;
+  items: StackItem[];
+};
+
+const LAYERS: Layer[] = [
   {
-    title: "Frontend development",
-    icon: Code2,
+    id: "frontend",
+    title: "Interface",
+    blurb: "Responsive UIs with React, Next.js, Vue, and modern CSS systems.",
     items: [
-      "React.js",
-      "Next.js",
-      "JavaScript",
-      "TypeScript",
-      "HTML5",
-      "CSS3",
-      "Tailwind CSS",
-      "Bootstrap",
-      "Chakra UI",
-      "Material UI",
-      "Responsive design",
-      "Mobile-first development",
+      {name: "TypeScript", mark: "TS", markClass: "bg-[#3178C6] text-white"},
+      {name: "JavaScript", mark: "JS", markClass: "bg-[#F7DF1E] text-black"},
+      {name: "React", icon: Atom, iconClass: "text-[#61DAFB]"},
+      {name: "Next.js", mark: "N", markClass: "bg-foreground text-background"},
+      {name: "Vue.js", mark: "V", markClass: "bg-[#42B883] text-white"},
+      {name: "Tailwind", icon: Wind, iconClass: "text-[#38BDF8]"},
+      {name: "Bootstrap", mark: "B", markClass: "bg-[#7952B3] text-white"},
+      {
+        name: "Chakra / MUI",
+        mark: "UI",
+        markClass: "bg-primary text-primary-foreground text-[10px]",
+      },
+      {name: "React Native", icon: Smartphone, iconClass: "text-[#61DAFB]"},
     ],
   },
   {
-    title: "Backend development",
-    icon: Server,
+    id: "backend",
+    title: "Systems",
+    blurb: "APIs, data, auth, realtime, and Python for automation.",
     items: [
-      "Node.js",
-      "Express.js",
-      "REST APIs",
-      "GraphQL",
-      "Prisma ORM",
-      "Authentication systems",
-      "RBAC",
-      "Webhooks",
+      {name: "Node.js", icon: Hexagon, iconClass: "text-[#5FA04E]"},
+      {name: "Express", icon: Server, iconClass: "text-foreground"},
+      {name: "Python", mark: "PY", markClass: "bg-[#3776AB] text-white"},
+      {name: "GraphQL", icon: Braces, iconClass: "text-[#E10098]"},
+      {name: "REST APIs", icon: Workflow, iconClass: "text-primary"},
+      {
+        name: "Socket.IO",
+        mark: "IO",
+        markClass: "bg-foreground text-background text-[10px]",
+      },
+      {name: "PostgreSQL", icon: Database, iconClass: "text-[#336791]"},
+      {
+        name: "MySQL",
+        mark: "SQL",
+        markClass: "bg-[#4479A1] text-white text-[10px]",
+      },
+      {
+        name: "Prisma",
+        mark: "ORM",
+        markClass: "bg-foreground text-background text-[10px]",
+      },
     ],
   },
   {
-    title: "Mobile development",
-    icon: Smartphone,
-    items: ["React Native", "Expo"],
-  },
-  {
-    title: "Databases",
-    icon: Database,
-    items: ["PostgreSQL", "SQL"],
-  },
-  {
-    title: "API & integrations",
-    icon: Plug,
+    id: "commerce",
+    title: "CMS & Commerce",
+    blurb: "Shopify, WordPress, Squarespace, and payment integrations.",
     items: [
-      "Stripe API",
-      "Shopify API",
-      "Shopify GraphQL",
-      "HubSpot API",
-      "ClickUp API",
-      "Hostaway API",
-      "Microsoft Graph API",
-      "Azure Blob Storage",
-      "REST APIs",
-      "Webhooks",
+      {name: "Shopify", icon: ShoppingBag, iconClass: "text-[#95BF47]"},
+      {
+        name: "Shopify Liquid",
+        mark: "LQ",
+        markClass: "bg-[#95BF47] text-black text-[10px]",
+      },
+      {
+        name: "WordPress",
+        mark: "WP",
+        markClass: "bg-[#21759B] text-white text-[10px]",
+      },
+      {
+        name: "Squarespace",
+        mark: "SQ",
+        markClass: "bg-foreground text-background text-[10px]",
+      },
+      {
+        name: "Stripe",
+        mark: "PAY",
+        markClass: "bg-[#635BFF] text-white text-[10px]",
+      },
     ],
   },
   {
-    title: "DevOps & deployment",
-    icon: Rocket,
-    items: ["Docker", "GitHub Actions", "PM2", "Nginx", "Vercel", "CI/CD pipelines"],
-  },
-  {
-    title: "Ecommerce (Shopify & more)",
-    icon: ShoppingCart,
+    id: "integrations",
+    title: "Integrations",
+    blurb: "Third-party APIs that connect product workflows end to end.",
     items: [
-      "Shopify",
-      "Shopify Liquid",
-      "Shopify theme development",
-      "Shopify 2.0",
-      "Metafields",
-      "JSON templates",
-      "Shopify custom sections",
-      "Ecommerce integrations",
-      "Squarespace",
+      {
+        name: "HubSpot",
+        mark: "HS",
+        markClass: "bg-[#FF7A59] text-white text-[10px]",
+      },
+      {
+        name: "ClickUp",
+        mark: "CU",
+        markClass: "bg-[#7B68EE] text-white text-[10px]",
+      },
+      {
+        name: "Hostaway",
+        mark: "HA",
+        markClass: "bg-primary text-primary-foreground text-[10px]",
+      },
+      {
+        name: "Azure Blob",
+        mark: "AZ",
+        markClass: "bg-[#0078D4] text-white text-[10px]",
+      },
+      {
+        name: "Microsoft Graph",
+        mark: "MG",
+        markClass: "bg-[#00A4EF] text-white text-[10px]",
+      },
+      {
+        name: "Postman",
+        mark: "API",
+        markClass: "bg-[#FF6C37] text-white text-[10px]",
+      },
     ],
   },
   {
-    title: "Development tools",
-    icon: Wrench,
-    items: ["Git", "GitHub", "Postman", "Figma", "VS Code", "Cursor AI", "Claude AI", "ChatGPT"],
-  },
-  {
-    title: "Analytics & tracking",
-    icon: BarChart3,
-    items: ["Google Analytics", "GA4", "Google Tag Manager", "Meta Pixel", "Conversion tracking"],
-  },
-  {
-    title: "Automation & productivity",
-    icon: Sparkles,
-    items: ["API automation", "Workflow automation", "Business process automation", "AI-assisted development"],
+    id: "delivery",
+    title: "Delivery",
+    blurb: "Containers, process managers, and CI/CD for reliable releases.",
+    items: [
+      {name: "Docker", icon: Container, iconClass: "text-[#2496ED]"},
+      {name: "GitHub Actions", icon: GitBranch, iconClass: "text-foreground"},
+      {name: "Vercel", icon: Cloud, iconClass: "text-foreground"},
+      {
+        name: "PM2",
+        mark: "PM2",
+        markClass: "bg-[#2B037A] text-white text-[10px]",
+      },
+      {
+        name: "Nginx",
+        mark: "NG",
+        markClass: "bg-[#009639] text-white text-[10px]",
+      },
+      {name: "Git", icon: Boxes, iconClass: "text-[#F05032]"},
+    ],
   },
 ];
 
+function Mark({item}: {item: StackItem}) {
+  if (item.mark) {
+    return (
+      <span
+        className={cn(
+          "flex h-9 w-9 items-center justify-center rounded-md text-[11px] font-bold",
+          item.markClass,
+        )}>
+        {item.mark}
+      </span>
+    );
+  }
+  const Icon = item.icon ?? Code2;
+  return (
+    <span className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-muted/50">
+      <Icon className={cn("h-4 w-4", item.iconClass)} strokeWidth={1.75} />
+    </span>
+  );
+}
+
+/**
+ * Stack layers advance on scroll — same scroll-pinned pattern as Major projects.
+ */
 export function AnimatedSkillsGrid() {
   return (
-    <div id="skills" className="my-20 scroll-mt-24 space-y-10">
-      <SectionHeader
-        eyebrow="Stack"
-        title="Technical"
-        titleAccent="skills"
-        description="Hands-on depth across the stack—shipping UI, APIs, data, deployment, and automation—with measurable outcomes on performance, reliability, and time-to-release. Shopify and ecommerce tooling when the roadmap includes a storefront."
-      />
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {skillCategories.map(({title, icon: Icon, items}) => (
-          <div
-            key={title}
-            className="group rounded-2xl border border-border/90 bg-gradient-to-br from-card to-muted/15 p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 dark:to-muted/10">
-            <div className="flex items-center gap-3 mb-4">
-              <Icon className="h-6 w-6 text-primary shrink-0" aria-hidden />
-              <h3 className="text-lg font-semibold text-foreground">{title}</h3>
-            </div>
-            <ul className="flex flex-wrap gap-2">
-              {items.map((skill) => (
-                <li
-                  key={skill}
-                  className="text-xs sm:text-sm font-medium rounded-md bg-muted px-2.5 py-1.5 text-foreground border border-border/80">
-                  {skill}
-                </li>
-              ))}
-            </ul>
+    <section id="skills" className="my-20 scroll-mt-24 md:my-28">
+      <ScrollPinned
+        itemCount={LAYERS.length}
+        header={
+          <div className="max-w-2xl">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+              Technology
+            </p>
+            <h2 className="font-display mt-2 text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+              Built in <span className="gradient-text">layers</span>
+            </h2>
+            <p className="mt-3 text-sm text-muted-foreground md:text-base">
+              Scroll through each layer — frontend, backend, CMS, integrations,
+              and delivery.
+            </p>
           </div>
-        ))}
-      </div>
-    </div>
+        }>
+        {({active, scrollToIndex}) => {
+          const current = LAYERS[active];
+          return (
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,14rem)_1fr] lg:gap-8">
+              <div
+                className="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible"
+                role="tablist"
+                aria-label="Stack layers">
+                {LAYERS.map((layer, i) => (
+                  <button
+                    key={layer.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={i === active}
+                    onClick={() => scrollToIndex(i)}
+                    className={cn(
+                      "flex min-w-[9.5rem] shrink-0 items-start gap-3 rounded-md border px-3 py-2.5 text-left transition-colors lg:min-w-0",
+                      i === active
+                        ? "border-primary/40 bg-primary/10 text-foreground"
+                        : "border-border bg-card text-muted-foreground hover:text-foreground",
+                    )}>
+                    <span
+                      className={cn(
+                        "font-display mt-0.5 text-xs tabular-nums",
+                        i === active
+                          ? "text-primary"
+                          : "text-muted-foreground",
+                      )}>
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-sm font-medium">{layer.title}</span>
+                  </button>
+                ))}
+              </div>
+
+              <div
+                key={current.id}
+                role="tabpanel"
+                className="relative animate-fade-up overflow-hidden rounded-xl border border-border bg-card">
+                <div className="pointer-events-none absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-primary via-violet-400/80 to-transparent" />
+                <div className="border-b border-border px-6 py-5 md:px-8 md:py-6">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+                    {String(active + 1).padStart(2, "0")} /{" "}
+                    {String(LAYERS.length).padStart(2, "0")} — {current.title}
+                  </p>
+                  <p className="mt-2 max-w-lg text-sm text-muted-foreground md:text-base">
+                    {current.blurb}
+                  </p>
+                </div>
+                <ul className="grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3">
+                  {current.items.map((item, i) => (
+                    <li
+                      key={item.name}
+                      className="flex items-center gap-3 bg-card px-5 py-4 transition-colors hover:bg-muted/30 md:px-6">
+                      <Mark item={item} />
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-foreground">
+                          {item.name}
+                        </p>
+                        <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
+                          {current.title} · {String(i + 1).padStart(2, "0")}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          );
+        }}
+      </ScrollPinned>
+    </section>
   );
 }
