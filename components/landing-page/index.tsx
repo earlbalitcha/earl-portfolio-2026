@@ -8,7 +8,6 @@ import ProfessionalExperience from "./experience";
 import CallToAction from "./call-to-action";
 import Footer from "./footer";
 import ContactFormButton from "./contact-form-button";
-import StartProject from "./start-project";
 import SectionScrollHandler from "./section-scroll-handler";
 import type {LandingPageProps} from "./types";
 import {AnimatedSkillsGrid} from "../ui/animated-skills-grid";
@@ -23,7 +22,6 @@ export {
   CallToAction,
   Footer,
   ContactFormButton,
-  StartProject,
 };
 
 export default function LandingPage({

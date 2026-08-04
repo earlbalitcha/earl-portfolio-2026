@@ -235,10 +235,18 @@ export default function MobileMenu({isOpen, onClose}: MobileMenuProps) {
               : "0ms",
           }}>
           <Link
+            href="/start"
+            onClick={onClose}
+            className="flex items-center justify-between gap-3 rounded-lg border border-primary/35 bg-primary/15 px-3.5 py-3 text-[13px] font-medium tracking-wide text-primary transition-colors duration-300 hover:border-primary/50 hover:bg-primary/20">
+            <span>Begin project brief</span>
+            <ArrowRight className="h-3.5 w-3.5 opacity-70" strokeWidth={1.5} />
+          </Link>
+
+          <Link
             href={landingProjectsNav.href}
             onClick={onClose}
             className={cn(
-              "flex items-center justify-between gap-3 rounded-lg border px-3.5 py-3 text-[13px] font-medium tracking-wide transition-colors duration-300",
+              "mt-2.5 flex items-center justify-between gap-3 rounded-lg border px-3.5 py-3 text-[13px] font-medium tracking-wide transition-colors duration-300",
               projectsActive
                 ? "border-primary/35 bg-primary/15 text-primary"
                 : "border-white/[0.08] bg-white/[0.02] text-foreground hover:border-primary/30 hover:bg-primary/10 hover:text-primary",

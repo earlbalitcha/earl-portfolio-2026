@@ -1,7 +1,9 @@
 "use client";
 
 import {ShoppingBag, LayoutTemplate, Globe} from "lucide-react";
+import Link from "next/link";
 import SectionHeader from "./section-header";
+import StartProjectBanner from "./start-project-banner";
 
 const platforms = [
   {
@@ -58,6 +60,15 @@ export default function ShopifySection() {
           </article>
         ))}
       </div>
+
+      <StartProjectBanner className="mt-8 md:mt-10" />
+      <p className="mt-3 text-center text-xs text-muted-foreground md:text-left">
+        Prefer to reach out first?{" "}
+        <Link href="/contact" className="text-primary hover:underline">
+          Contact me
+        </Link>
+        .
+      </p>
     </section>
   );
 }

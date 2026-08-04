@@ -38,19 +38,19 @@ export default function RootLayout({
       <body className={`${outfit.variable} ${outfit.className}`}>
         {/* Curtain outside Suspense so it always mounts on load/reload */}
         <IntroCurtain />
-        <Suspense fallback={null}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            forcedTheme="dark"
-            enableSystem={false}
-            storageKey="portfolio-theme"
-            disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          forcedTheme="dark"
+          enableSystem={false}
+          storageKey="portfolio-theme"
+          disableTransitionOnChange>
+          <Suspense fallback={null}>
             <AmbientBackground />
             {children}
-            <Toaster />
-          </ThemeProvider>
-        </Suspense>
+          </Suspense>
+          <Toaster />
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>

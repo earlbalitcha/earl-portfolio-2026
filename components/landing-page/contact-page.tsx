@@ -9,6 +9,7 @@ import {
   ArrowRight,
   Phone,
 } from "lucide-react";
+import Link from "next/link";
 import Header from "@/components/landing-page/header";
 import Footer from "@/components/landing-page/footer";
 import ContactForm from "@/components/landing-page/contact-form";
@@ -189,22 +190,19 @@ export default function ContactPage() {
 
               <section className="rounded-xl border border-primary/25 bg-primary/10 p-6 md:p-7">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
-                  Have a project ready?
+                  Ready to begin a project?
                 </p>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Skip the small talk — open the form with a clear brief and
-                  timeline.
+                  Planning a Shopify store build or redesign? Submit a short
+                  project brief — approximately 5–8 minutes. Store credentials
+                  are never requested.
                 </p>
-                <a
-                  href="#contact-name"
-                  className="btn-primary mt-5 inline-flex items-center gap-2"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById("contact-name")?.focus();
-                  }}>
-                  Start a brief
+                <Link
+                  href="/start"
+                  className="btn-primary mt-5 inline-flex items-center gap-2">
+                  Begin project brief
                   <ArrowRight className="h-4 w-4" />
-                </a>
+                </Link>
               </section>
             </aside>
           </div>

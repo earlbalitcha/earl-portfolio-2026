@@ -6,18 +6,18 @@ import ContactFormButton from "./contact-form-button";
 import {scrollToSection} from "@/lib/section-nav";
 
 const TECH = [
+  "Shopify",
   "React",
   "Next.js",
   "Vue.js",
   "Node.js",
   "TypeScript",
-  "Python",
 ];
 
 const BEATS = [
-  {label: "Build", value: "Web apps, SaaS & APIs"},
-  {label: "Ship", value: "Dashboards & realtime systems"},
-  {label: "Connect", value: "Stripe, Shopify, HubSpot & more"},
+  {label: "Shopify", value: "Custom storefronts, themes & redesigns"},
+  {label: "Build", value: "Web apps, SaaS platforms & APIs"},
+  {label: "Ship", value: "Dashboards, realtime systems & CMS"},
 ];
 
 export default function Hero() {
@@ -45,9 +45,9 @@ export default function Hero() {
               <span className="gradient-text">Balitcha</span>
             </span>
           </h1>
-          <p className="mt-5 max-w-md text-base text-muted-foreground sm:text-lg">
-            3 years building scalable web apps with React, Next.js, Vue.js,
-            Node.js & TypeScript.
+          <p className="mt-5 max-w-lg text-base text-muted-foreground sm:text-lg">
+            3 years building scalable web apps and custom Shopify storefronts
+            with React, Next.js, Vue.js, Node.js &amp; TypeScript.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">
             {TECH.map((t) => (
@@ -58,7 +58,7 @@ export default function Hero() {
               </span>
             ))}
           </div>
-          <div className="mt-9 flex flex-wrap items-center gap-4">
+          <div className="mt-9 flex flex-wrap items-center gap-5">
             <ContactFormButton />
             <button
               type="button"
@@ -107,8 +107,8 @@ export default function Hero() {
             <div className="mt-8 grid grid-cols-3 gap-3 border-t border-border pt-6">
               {[
                 {n: "3+", l: "Years"},
+                {n: "Shopify", l: "Stores"},
                 {n: "SaaS", l: "Platforms"},
-                {n: "CMS", l: "Integrations"},
               ].map((s) => (
                 <div key={s.l} className="text-center">
                   <p className="font-display text-2xl font-semibold gradient-text">

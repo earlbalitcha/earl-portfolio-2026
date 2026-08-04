@@ -91,6 +91,16 @@ export default function Header() {
 
           <div className="flex items-center gap-2">
             <Link
+              href="/start"
+              className={cn(
+                "hidden rounded-md px-3.5 py-2 text-[13px] font-semibold transition-colors md:inline-flex",
+                pathname === "/start"
+                  ? "bg-primary text-primary-foreground"
+                  : "border border-primary/40 bg-primary/10 text-primary hover:border-primary/60 hover:bg-primary/20",
+              )}>
+              Project brief
+            </Link>
+            <Link
               href={landingProjectsNav.href}
               className={cn(
                 "hidden rounded-md px-3.5 py-2 text-[13px] font-semibold transition-colors sm:inline-flex",
@@ -105,7 +115,7 @@ export default function Header() {
               type="button"
               onClick={() => setMobileMenuOpen((open) => !open)}
               className={cn(
-                "relative flex h-9 w-9 items-center justify-center rounded-md border transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden",
+                "relative flex h-9 w-9 items-center justify-center rounded-md border transition-all duration-500 ease-out lg:hidden",
                 mobileMenuOpen
                   ? "border-primary/35 bg-primary/10 text-primary"
                   : "border-border bg-card text-foreground hover:bg-muted",
@@ -114,7 +124,7 @@ export default function Header() {
               aria-expanded={mobileMenuOpen}>
               <Menu
                 className={cn(
-                  "absolute h-4 w-4 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                  "absolute h-4 w-4 transition-all duration-500 ease-out",
                   mobileMenuOpen
                     ? "scale-75 rotate-90 opacity-0"
                     : "scale-100 rotate-0 opacity-100",
@@ -123,7 +133,7 @@ export default function Header() {
               />
               <X
                 className={cn(
-                  "absolute h-4 w-4 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                  "absolute h-4 w-4 transition-all duration-500 ease-out",
                   mobileMenuOpen
                     ? "scale-100 rotate-0 opacity-100"
                     : "scale-75 -rotate-90 opacity-0",

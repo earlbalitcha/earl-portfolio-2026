@@ -95,6 +95,7 @@
 [data-sonner-toaster] {
   --width: min(22.5rem, calc(100vw - 2rem));
   font-family: var(--font-outfit), var(--font-sans), system-ui, sans-serif !important;
+  z-index: 10050 !important;
 }
 
 [data-sonner-toast].portfolio-toast {

@@ -19,6 +19,7 @@ const quickLinks = [
   {type: "route" as const, href: "/projects", label: "Projects"},
   {type: "section" as const, sectionId: "about", label: "About"},
   {type: "section" as const, sectionId: "approach", label: "Approach"},
+  {type: "route" as const, href: "/start", label: "Project brief"},
   {type: "route" as const, href: "/contact", label: "Contact"},
 ];
 

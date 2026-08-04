@@ -21,6 +21,13 @@ export default function IntroCurtain() {
   const hasPlayedIntro = useRef(false);
 
   useEffect(() => {
+    // Let clients open /start quickly when you email them the link
+    if (pathname === "/start") {
+      hasPlayedIntro.current = true;
+      setPhase("gone");
+      return;
+    }
+
     const nextMode: CurtainMode = hasPlayedIntro.current ? "loading" : "intro";
     const {hold, total} = TIMINGS[nextMode];
 

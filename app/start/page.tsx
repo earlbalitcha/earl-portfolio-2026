@@ -1,21 +1,16 @@
-import Header from "@/components/landing-page/header"
-import StartProject from "@/components/landing-page/start-project"
-import Footer from "@/components/landing-page/footer"
+import ShopifyProjectForm from "@/components/landing-page/shopify-project-form";
+import type {Metadata} from "next";
 
-export const metadata = {
-  title: "Start a Project | Earl Gerald R. Balitcha",
+export const metadata: Metadata = {
+  title: "Start a Shopify Project | Earl Gerald R. Balitcha",
   description:
-    "Tell me about your web app, ecommerce, dashboard, or integration needs—then we can schedule a follow-up.",
-}
+    "Submit a Shopify project brief — share your goals, timeline, and budget. A detailed discovery follows once engagement terms are agreed.",
+};
 
 export default function StartPage() {
   return (
-    <main className="relative min-h-screen">
-      <Header />
-      <div className="relative z-10">
-        <StartProject />
-        <Footer />
-      </div>
+    <main className="relative min-h-[100svh]">
+      <ShopifyProjectForm />
     </main>
-  )
+  );
 }

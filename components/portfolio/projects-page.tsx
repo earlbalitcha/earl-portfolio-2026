@@ -3,6 +3,7 @@
 import Header from "@/components/landing-page/header";
 import Footer from "@/components/landing-page/footer";
 import SectionHeader from "@/components/landing-page/section-header";
+import StartProjectBanner from "@/components/landing-page/start-project-banner";
 import PortfolioMasonryGridFinal from "./portfolio-masonry-grid-final";
 import ShopifyStoresGrid from "./shopify-stores-grid";
 import type {PortfolioItem} from "@/utils/csv-parser";
@@ -38,6 +39,7 @@ export default function ProjectsPage({initialData}: ProjectsPageProps) {
             <div className="mt-10 md:mt-12">
               <ShopifyStoresGrid />
             </div>
+            <StartProjectBanner className="mt-10 md:mt-12" />
           </div>
         </div>
         <Footer />

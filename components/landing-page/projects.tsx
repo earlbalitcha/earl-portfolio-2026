@@ -121,9 +121,14 @@ export default function Projects() {
               ))}
         </div>
 
-        <div className="mt-10 flex justify-center">
+        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
           <Link href="/projects" className="btn-primary">
             View all projects
+          </Link>
+          <Link
+            href="/start"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+            Start Shopify project →
           </Link>
         </div>
       </div>

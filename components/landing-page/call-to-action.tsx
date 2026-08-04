@@ -56,11 +56,16 @@ export default function CallToAction() {
               or ecommerce is in scope.
             </p>
             <div className="gradient-rule mt-6 opacity-70 sm:mt-8" />
-            <div className="mt-6 sm:mt-8">
+            <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center">
               <Link
                 href="/contact"
                 className="btn-primary w-full px-5 text-sm sm:w-auto sm:px-7 sm:text-base">
                 Go to contact page
+              </Link>
+              <Link
+                href="/start"
+                className="inline-flex w-full items-center justify-center rounded-md border border-primary/40 bg-primary/10 px-5 py-2.5 text-sm font-semibold text-primary transition-colors hover:border-primary/60 hover:bg-primary/20 sm:w-auto sm:px-7 sm:text-base">
+                Start Shopify project
               </Link>
             </div>
           </div>

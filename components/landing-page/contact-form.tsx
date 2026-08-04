@@ -8,6 +8,22 @@ import {Label} from "@/components/ui/label";
 import {Textarea} from "@/components/ui/textarea";
 import {cn} from "@/lib/utils";
 
+const WEB3_PUBLIC_KEY =
+  process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY?.trim() ?? "";
+
+async function postWeb3Forms(accessKey: string, body: Record<string, string>) {
+  const res = await fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({access_key: accessKey, ...body}),
+  });
+  const data = (await res.json().catch(() => ({}))) as {
+    success?: boolean;
+    message?: string;
+  };
+  return {ok: res.ok && Boolean(data.success), detail: data.message};
+}
+
 const fieldClass =
   "h-11 rounded-md border-border bg-muted/30 text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-primary";
 
@@ -22,6 +38,7 @@ export default function ContactForm({className}: ContactFormProps) {
   const [message, setMessage] = useState("");
   const [company, setCompany] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   function resetForm() {
     setName("");
@@ -33,18 +50,49 @@ export default function ContactForm({className}: ContactFormProps) {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    setSubmitError(null);
     const trimmedName = name.trim();
     const trimmedEmail = email.trim();
     const trimmedSubject = subject.trim();
     const trimmedMessage = message.trim();
     if (!trimmedName || !trimmedEmail || !trimmedMessage) return;
 
+    const subjectLine = trimmedSubject.length
+      ? `[Portfolio] ${trimmedSubject}`
+      : "[Portfolio] Inquiry from your site";
+    const textBody = [
+      `Name: ${trimmedName}`,
+      `Email: ${trimmedEmail}`,
+      "",
+      trimmedMessage,
+    ].join("\n");
+
     setSubmitting(true);
     try {
-      // Honeypot — silently succeed for bots
+      let lastError = "Please try again, or email earlbalitcha@gmail.com.";
+
+      // Honeypot — browsers sometimes autofill "company"; ignore silently
       if (company.trim()) {
-        resetForm();
         return;
+      }
+
+      if (WEB3_PUBLIC_KEY) {
+        const w = await postWeb3Forms(WEB3_PUBLIC_KEY, {
+          subject: subjectLine,
+          name: trimmedName,
+          email: trimmedEmail,
+          replyto: trimmedEmail,
+          message: textBody,
+        });
+        if (w.ok) {
+          toast.success("Message sent", {
+            description:
+              "Thank you. I received your message and will reply as soon as I can.",
+          });
+          resetForm();
+          return;
+        }
+        if (w.detail) lastError = w.detail;
       }
 
       const res = await fetch("/api/contact", {
@@ -55,7 +103,7 @@ export default function ContactForm({className}: ContactFormProps) {
           email: trimmedEmail,
           subject: trimmedSubject || undefined,
           message: trimmedMessage,
-          company,
+          company: "",
         }),
       });
       const data = (await res.json().catch(() => ({}))) as {
@@ -66,21 +114,20 @@ export default function ContactForm({className}: ContactFormProps) {
       if (res.ok && data.ok) {
         toast.success("Message sent", {
           description:
-            "Thanks — I received your note and will reply as soon as I can.",
+            "Thank you. I received your message and will reply as soon as I can.",
         });
         resetForm();
         return;
       }
 
-      toast.error("Unable to send", {
-        description:
-          data.error ||
-          "Something went wrong. Try again or email me directly.",
-      });
+      const detail = data.error || lastError;
+      setSubmitError(detail);
+      toast.error("Unable to send", {description: detail});
     } catch {
-      toast.error("Unable to send", {
-        description: "Network error. Check your connection and try again.",
-      });
+      const detail =
+        "Network error. Check your connection and try again, or email earlbalitcha@gmail.com.";
+      setSubmitError(detail);
+      toast.error("Unable to send", {description: detail});
     } finally {
       setSubmitting(false);
     }
@@ -89,12 +136,13 @@ export default function ContactForm({className}: ContactFormProps) {
   return (
     <form onSubmit={handleSubmit} className={cn("space-y-5", className)}>
       <div
-        className="absolute -left-[9999px] h-0 w-0 overflow-hidden"
-        aria-hidden>
-        <Label htmlFor="contact-company">Company</Label>
+        className="pointer-events-none absolute -left-[9999px] top-auto h-px w-px opacity-0"
+        aria-hidden
+        tabIndex={-1}>
+        <Label htmlFor="contact-hp-field">Leave blank</Label>
         <Input
-          id="contact-company"
-          name="company"
+          id="contact-hp-field"
+          name="hp_field"
           tabIndex={-1}
           autoComplete="off"
           value={company}
@@ -173,6 +221,13 @@ export default function ContactForm({className}: ContactFormProps) {
         {submitting ? "Sending…" : "Send message"}
         {!submitting && <ArrowRight className="h-4 w-4" />}
       </button>
+      {submitError ? (
+        <p
+          role="alert"
+          className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2.5 text-sm text-destructive">
+          {submitError}
+        </p>
+      ) : null}
       <p className="text-center text-xs text-muted-foreground sm:text-left">
         I read every message and usually reply within a day or two.
       </p>
