@@ -46,7 +46,7 @@ export default function Hero() {
             </span>
           </h1>
           <p className="mt-5 max-w-md text-base text-muted-foreground sm:text-lg">
-            2 years building scalable web apps with React, Next.js, Vue.js,
+            3 years building scalable web apps with React, Next.js, Vue.js,
             Node.js & TypeScript.
           </p>
           <div className="mt-6 flex flex-wrap gap-2">

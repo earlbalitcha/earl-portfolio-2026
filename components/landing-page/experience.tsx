@@ -114,7 +114,7 @@ export default function ProfessionalExperience() {
           eyebrow="Career"
           title="Professional"
           titleAccent="experience"
-          description="Falcon Global Services · 2024–2026 · Full Stack Developer"
+          description="Falcon Global Services · Apr 2023–Apr 2026 · Full Stack Developer"
         />
 
         <div className="surface-glass flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
@@ -126,7 +126,7 @@ export default function ProfessionalExperience() {
               Falcon Global Services · Tarlac City
             </p>
           </div>
-          <p className="text-sm font-medium text-primary">2024 – 2026</p>
+          <p className="text-sm font-medium text-primary">Apr 2023 – Apr 2026</p>
         </div>
 
         <div className="mt-10 grid gap-4 md:mt-12 md:grid-cols-3">

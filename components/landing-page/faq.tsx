@@ -20,12 +20,12 @@ const strengths = [
 const path = [
   {
     title: "Full Stack Developer",
-    place: "Falcon Global Services · 2024–2026 · Tarlac City",
+    place: "Falcon Global Services · Apr 2023–Apr 2026 · Tarlac City",
     icon: Briefcase,
   },
   {
     title: "BS Information Technology",
-    place: "Central Luzon State University · 2019–2024",
+    place: "Central Luzon State University · Graduated 2023",
     icon: GraduationCap,
   },
 ];
@@ -47,7 +47,7 @@ export default function AboutSection() {
           </p>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground md:text-base">
             Full Stack Developer with{" "}
-            <span className="font-semibold text-foreground">2 years</span> of
+            <span className="font-semibold text-foreground">3 years</span> of
             experience building scalable web applications using{" "}
             <span className="font-semibold text-foreground">
               React, Next.js, Vue.js, Node.js, TypeScript, and Python
