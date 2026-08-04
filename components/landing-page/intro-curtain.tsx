@@ -84,24 +84,24 @@ export default function IntroCurtain() {
           transition: "opacity 0.45s ease",
         }}>
         {isLoading ? (
-          <>
+          <div className="relative bg-[#101010] px-8 py-4">
             <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-primary">
               Loading
             </p>
-            <div className="mt-6 h-px w-28 bg-gradient-to-r from-transparent via-primary to-transparent" />
-          </>
+            <div className="mt-5 h-px w-24 bg-gradient-to-r from-transparent via-primary to-transparent" />
+          </div>
         ) : (
-          <>
+          <div className="relative bg-[#101010] px-6 py-5 text-center sm:px-12 sm:py-6">
             <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-primary">
               Portfolio 2026
             </p>
-            <h1 className="font-display mt-4 text-center text-3xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl">
-              Earl Gerald Balitcha
+            <h1 className="font-display mt-4 text-3xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl">
+              Earl Balitcha
             </h1>
-            <p className="mt-4 text-center text-sm tracking-wide text-white/70 sm:text-lg">
+            <p className="mt-4 text-sm tracking-wide text-white/70 sm:text-lg">
               Full Stack Developer
             </p>
-          </>
+          </div>
         )}
       </div>
     </div>

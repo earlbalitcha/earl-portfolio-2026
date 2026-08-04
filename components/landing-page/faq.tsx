@@ -59,7 +59,7 @@ export default function AboutSection() {
           </p>
           <div className="mt-6 grid grid-cols-3 gap-3 border-t border-border pt-5">
             {[
-              {n: "2+", l: "Years"},
+              {n: "3+", l: "Years"},
               {n: "FS", l: "Full stack"},
               {n: "CI/CD", l: "Deploys"},
             ].map((s) => (

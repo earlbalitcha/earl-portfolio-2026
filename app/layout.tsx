@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { Outfit } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/next"
 import AmbientBackground from "@/components/landing-page/ambient-background"
 import IntroCurtain from "@/components/landing-page/intro-curtain"
 import "@/components/landing-page/styles.css"
@@ -48,10 +48,10 @@ export default function RootLayout({
             disableTransitionOnChange>
             <AmbientBackground />
             {children}
-            <Toaster richColors closeButton position="top-center" />
+            <Toaster />
           </ThemeProvider>
-          <Analytics />
         </Suspense>
+        <Analytics />
       </body>
     </html>
   )

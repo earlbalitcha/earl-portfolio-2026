@@ -106,7 +106,7 @@ export default function Hero() {
 
             <div className="mt-8 grid grid-cols-3 gap-3 border-t border-border pt-6">
               {[
-                {n: "2+", l: "Years"},
+                {n: "3+", l: "Years"},
                 {n: "SaaS", l: "Platforms"},
                 {n: "CMS", l: "Integrations"},
               ].map((s) => (

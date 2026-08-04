@@ -8,22 +8,6 @@ import {Label} from "@/components/ui/label";
 import {Textarea} from "@/components/ui/textarea";
 import {cn} from "@/lib/utils";
 
-const WEB3_PUBLIC_KEY =
-  process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY?.trim() ?? "";
-
-async function postWeb3Forms(accessKey: string, body: Record<string, string>) {
-  const res = await fetch("https://api.web3forms.com/submit", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({access_key: accessKey, ...body}),
-  });
-  const data = (await res.json().catch(() => ({}))) as {
-    success?: boolean;
-    message?: string;
-  };
-  return {ok: res.ok && Boolean(data.success), detail: data.message};
-}
-
 const fieldClass =
   "h-11 rounded-md border-border bg-muted/30 text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-primary";
 
@@ -55,44 +39,11 @@ export default function ContactForm({className}: ContactFormProps) {
     const trimmedMessage = message.trim();
     if (!trimmedName || !trimmedEmail || !trimmedMessage) return;
 
-    const subjectLine = trimmedSubject.length
-      ? `[Portfolio] ${trimmedSubject}`
-      : "[Portfolio] Inquiry from your site";
-    const textBody = [
-      `Name: ${trimmedName}`,
-      `Email: ${trimmedEmail}`,
-      "",
-      trimmedMessage,
-    ].join("\n");
-
     setSubmitting(true);
     try {
+      // Honeypot — silently succeed for bots
       if (company.trim()) {
         resetForm();
-        return;
-      }
-
-      if (WEB3_PUBLIC_KEY) {
-        const w = await postWeb3Forms(WEB3_PUBLIC_KEY, {
-          subject: subjectLine,
-          name: trimmedName,
-          email: trimmedEmail,
-          replyto: trimmedEmail,
-          message: textBody,
-        });
-        if (w.ok) {
-          toast.success("Message sent", {
-            description:
-              "Thanks — I received your note and will reply as soon as I can.",
-          });
-          resetForm();
-          return;
-        }
-        toast.error("Unable to send", {
-          description:
-            w.detail ||
-            "Check NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY in .env.local, then restart the dev server.",
-        });
         return;
       }
 

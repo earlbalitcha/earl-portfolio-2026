@@ -5,7 +5,7 @@ import {useState, useEffect} from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {usePathname, useRouter} from "next/navigation";
-import {Menu} from "lucide-react";
+import {Menu, X} from "lucide-react";
 import MobileMenu from "./mobile-menu";
 import {ScrollProgress} from "../ui/scroll-progress";
 import {landingProjectsNav, landingScrollNavItems} from "./nav-config";
@@ -103,10 +103,33 @@ export default function Header() {
 
             <button
               type="button"
-              onClick={() => setMobileMenuOpen(true)}
-              className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card text-foreground transition-colors hover:bg-muted lg:hidden"
-              aria-label="Open menu">
-              <Menu className="h-5 w-5" />
+              onClick={() => setMobileMenuOpen((open) => !open)}
+              className={cn(
+                "relative flex h-9 w-9 items-center justify-center rounded-md border transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden",
+                mobileMenuOpen
+                  ? "border-primary/35 bg-primary/10 text-primary"
+                  : "border-border bg-card text-foreground hover:bg-muted",
+              )}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}>
+              <Menu
+                className={cn(
+                  "absolute h-4 w-4 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                  mobileMenuOpen
+                    ? "scale-75 rotate-90 opacity-0"
+                    : "scale-100 rotate-0 opacity-100",
+                )}
+                strokeWidth={1.5}
+              />
+              <X
+                className={cn(
+                  "absolute h-4 w-4 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                  mobileMenuOpen
+                    ? "scale-100 rotate-0 opacity-100"
+                    : "scale-75 -rotate-90 opacity-0",
+                )}
+                strokeWidth={1.5}
+              />
             </button>
           </div>
         </div>
